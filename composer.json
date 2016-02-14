@@ -1,0 +1,20 @@
+{
+    "name": "mirko-pagliai/database-backup",
+    "description": "DatabaseBackup plugin for CakePHP",
+    "homepage": "https://github.com/mirko-pagliai/database-backup",
+    "type": "cakephp-plugin",
+    "license": "AGPL",
+	"authors": [{
+		"name": "Mirko Pagliai",
+		"email": "mirko.pagliai@gmail.com"
+    }],
+    "require": {
+        "php": ">=5.5.9",
+        "cakephp/cakephp": "~3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "DatabaseBackup\\": "src"
+        }
+    }
+}
