@@ -141,6 +141,8 @@ class DatabaseExport {
 	 * Sets the filename where to export the database.
 	 * 
 	 * If the filename is relative, then it's relative to the APP root.
+	 * 
+	 * Using this method, the compression type will be automatically detected by the filename.
 	 * @param string $filename Filename path, absolute or relative (will be relative to the APP root) 
 	 * @return string Filename path
 	 * @uses $filename
