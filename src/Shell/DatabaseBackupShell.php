@@ -45,9 +45,9 @@ class DatabaseBackupShell extends Shell {
 			if($this->param('connection'))
 				$backup->connection($this->param('connection'));
 
-			//Sets the filename or the compression parameters
-			if($this->param('filename'))
-				$backup->filename($this->param('filename'));
+			//Sets the output file or the compression parameters
+			if($this->param('output'))
+				$backup->filename($this->param('output'));
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
 			
@@ -76,7 +76,11 @@ class DatabaseBackupShell extends Shell {
 						'help' => __d('database_backup', 'Compression type. By default, no compression will be used'),
 						'short' => 'c'
 					],
-					'filename' => ['help' => __d('database_backup', 'Filename where to save the backup. It can be absolute or relative to the APP root')]
+					'output' => [
+						'help' => __d('database_backup', 'Output file where to save the backup. It can be absolute or relative to the APP root. '
+								. 'Using this method, the compression type will be automatically detected by the filename'),
+						'short' => 'o'
+					]
 				]]
 			]
 		]);
