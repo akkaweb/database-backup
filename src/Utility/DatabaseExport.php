@@ -22,6 +22,8 @@
  */
 namespace DatabaseBackup\Utility;
 
+use Cake\Network\Exception\InternalErrorException;
+
 /**
  * Utility to export the database.
  * 
@@ -87,10 +89,11 @@ class DatabaseExport {
 	 * 
 	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
-	 * @return string
+	 * @return string Compression type
 	 * @uses $compression
 	 * @uses $executable
 	 * @uses $extension
+	 * @throws InternalErrorException
 	 */
 	public function compression($compression) {
 		switch($compression) {
@@ -110,7 +113,7 @@ class DatabaseExport {
 				$this->extension = 'sql';
 				break;
 			default:
-				//TO-DO: compressione non supportata
+				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
 				break;
 		}
 		
@@ -123,13 +126,13 @@ class DatabaseExport {
 	 * @param string $connection Connection name
 	 * @return array Connection parameters
 	 * @use $connection
+	 * @throws InternalErrorException
 	 */
 	public function connection($connection) {		
 		$this->connection = \Cake\Datasource\ConnectionManager::config($connection);
 		
-		if(empty($this->connection)) {
-			//TO-DO: connessione non valida
-		}
+		if(empty($this->connection))
+			throw new InternalErrorException(__d('database_backup', 'Invalid connection'));
 		
 		return $this->connection;
 	}
@@ -139,28 +142,26 @@ class DatabaseExport {
 	 * 
 	 * If the filename is relative, then it's relative to the APP root.
 	 * @param string $filename Filename path, absolute or relative (will be relative to the APP root) 
-	 * @return string
+	 * @return string Filename path
 	 * @uses $filename
 	 * @uses compression()
+	 * @throws InternalErrorException
 	 */
 	public function filename($filename) {
 		//If the filename is relative, then it's relative to the APP root
 		$filename = \Cake\Filesystem\Folder::isAbsolute(dirname($filename)) ? $filename : ROOT.DS.$filename;
 		
-		if(!is_writable(dirname($filename))) {
-			//TO-DO
-		}
+		if(!is_writable(dirname($filename)))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', dirname($filename)));
 		
-		if(file_exists($filename)) {
-			//TO-DO
-		}
+		if(file_exists($filename))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` already exists', $filename));
 
-		preg_match('/\.(.+)$/', $filename, $matches);
-			
-		if(empty($matches[1])) {
-			//TO-DO: estensione non presente
-		}
+		//Checks if the file has an extension
+		if(!preg_match('/\.(.+)$/', $filename, $matches))
+			throw new InternalErrorException(__d('database_backup', 'Invalid file extension1'));
 
+		//Sets the compression type
 		switch($matches[1]) {
 			case 'sql.gz':
 				$this->compression('gzip');
@@ -172,7 +173,7 @@ class DatabaseExport {
 				$this->compression('none');
 				break;
 			default:
-				//TO-DO: estensione/compressione non supportata
+				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
 				break;
 		}
 		
@@ -181,7 +182,7 @@ class DatabaseExport {
 
 	/**
 	 * Exports the database
-	 * @return string
+	 * @return string Filename path
 	 * @uses $compression
 	 * @uses $connection
 	 * @uses $extension
@@ -189,6 +190,7 @@ class DatabaseExport {
 	 * @uses compression()
 	 * @uses connection()
 	 * @uses filename()
+	 * @throws InternalErrorException
 	 */
 	public function export() {
 		//Sets the default database connection
@@ -215,9 +217,8 @@ class DatabaseExport {
 		//Deletes the temporary file
 		unlink($mysqldump);
 		
-		if(!is_readable($this->filename)) {
-			//TO-DO: file non creato...
-		}
+		if(!is_readable($this->filename))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` has not been created', $filename));
 		
 		return $this->filename;
 	}
