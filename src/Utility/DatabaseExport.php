@@ -163,21 +163,7 @@ class DatabaseExport {
 		if(!preg_match('/\.(.+)$/', $filename, $matches))
 			throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
 
-		//Sets the compression type
-		switch($matches[1]) {
-			case 'sql.gz':
-				$this->compression('gzip');
-				break;
-			case 'sql.bz2':
-				$this->compression('bzip2');
-				break;
-			case 'sql':
-				$this->compression('none');
-				break;
-			default:
-				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
-				break;
-		}
+		$this->compression(get_compression($matches[1]));
 		
 		return $this->filename = $filename;
 	}
