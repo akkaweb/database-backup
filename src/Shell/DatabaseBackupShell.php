@@ -23,11 +23,22 @@
 namespace DatabaseBackup\Shell;
 
 use Cake\Console\Shell;
+use Cake\Network\Exception\InternalErrorException;
 
 /**
  * Shell to manage the database backups.
  */
 class DatabaseBackupShell extends Shell {
+	/**
+	 * Initializes the Shell acts as constructor for subclasses allows configuration of tasks prior to shell execution
+	 * @uses Cake\Console\Shell::initialize()
+	 */
+	public function initialize() {
+        parent::initialize();
+		
+		$this->_io->styles('success', ['text' => 'green']);
+	}
+	
 	/**
 	 * Creates a database backup
 	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
@@ -36,8 +47,6 @@ class DatabaseBackupShell extends Shell {
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
 	 */
 	public function backup() {
-		$this->_io->styles('success', ['text' => 'green']);
-			
 		try {
 			$backup = new \DatabaseBackup\Utility\DatabaseExport();
 		
@@ -54,7 +63,41 @@ class DatabaseBackupShell extends Shell {
 			//Creates the backup file
 			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $backup->export())));
 		}
-		catch(\Cake\Network\Exception\InternalErrorException $e) {
+		catch(InternalErrorException $e) {
+			$this->abort($e->getMessage());
+		}
+	}
+	
+	/**
+	 * Lists database backups
+	 * @uses DatabaseBackup\Utility\BackupManager::getList()
+	 */
+	public function index() {
+		//Sets the directory
+		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
+				
+		$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
+		
+		try {
+			if($files = \DatabaseBackup\Utility\BackupManager::getList($dir)) {
+				//Re-indexes and filters
+				$files = array_map(function($file) {
+					return [$file['filename'], $file['compression'], $file['datetime']];
+				}, $files);
+
+				//Table headers
+				$headers = [
+					__d('database_backup', 'Filename'),
+					__d('database_backup', 'Compression type'),
+					__d('database_backup', 'Datetime')
+				];
+
+				// Output 1 newlines
+				$this->out($this->nl(1));
+				$this->helper('table')->output(array_merge([$headers], $files));
+			}
+		}
+		catch(InternalErrorException $e) {
 			$this->abort($e->getMessage());
 		}
 	}
@@ -80,6 +123,15 @@ class DatabaseBackupShell extends Shell {
 						'help' => __d('database_backup', 'Output file where to save the backup. It can be absolute or relative to the APP root. '
 								. 'Using this method, the compression type will be automatically detected by the filename'),
 						'short' => 'o'
+					]
+				]]
+			],
+			'index' => [
+				'help' => __d('database_backup', 'Lists database backups'),
+				'parser' => ['options' => [
+					'directory' => [
+						'help' => __d('database_backup', 'Alternative directory from which to read backups'),
+						'short' => 'd'
 					]
 				]]
 			]
