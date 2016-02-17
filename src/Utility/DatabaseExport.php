@@ -191,7 +191,7 @@ class DatabaseExport {
 		
 		//Sets the default filename where to export the database
 		if(empty($this->filename))		
-			$this->filename(ROOT.DS.'backup'.DS.sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->extension));
+			$this->filename(BACKUP.DS.sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->extension));
 		
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
