@@ -161,7 +161,7 @@ class DatabaseExport {
 
 		//Checks if the file has an extension
 		if(!preg_match('/\.(.+)$/', $filename, $matches))
-			throw new InternalErrorException(__d('database_backup', 'Invalid file extension1'));
+			throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
 
 		//Sets the compression type
 		switch($matches[1]) {
