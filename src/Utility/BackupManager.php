@@ -22,6 +22,8 @@
  */
 namespace DatabaseBackup\Utility;
 
+use Cake\Filesystem\File;
+
 /**
  * Utility to handle database backups
  */
@@ -31,20 +33,30 @@ class BackupManager {
 	 * @param string $dir Alternative directory from which to read backups
 	 * @return array
 	 */
-	public static function getList($dir = NULL) {
+	public static function index($dir = NULL) {
+		$dir = empty($dir) ? BACKUP : $dir;
+		
 		//Gets all files
-		$files = array_values((new \Cake\Filesystem\Folder(empty($dir) ? BACKUP : $dir))->read()[1]);
+		$files = array_values((new \Cake\Filesystem\Folder($dir))->read()[1]);
 		
 		//Parses files
-		$files = array_filter(array_map(function($file) {
-			if(!preg_match('/(\d{14})\.(sql|sql\.gz|sql\.bz2)$/i', $file, $matches))
+		$files = array_filter(array_map(function($file) use ($dir) {
+			preg_match('/(\d{14})?\.(sql|sql\.gz|sql\.bz2)$/i', $file, $matches);
+			
+			if(empty($matches[2]))
 				return FALSE;
 			
+			//If it cannot detect the date from the filename, it tries to find the last modified date of the file
+			if(!empty($matches[1]))
+				$datetime = preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1]);
+			else
+				$datetime = date('Y-m-d H:i:s', (new File($dir.DS.$file))->lastChange());
+									
 			return [
 				'filename' => $file,
 				'extension' => $matches[2],
 				'compression' => get_compression($matches[2]),
-				'datetime' => preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1])
+				'datetime' => $datetime
 			];
 		}, $files));
 		
