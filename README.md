@@ -3,7 +3,7 @@ DatabaseBackup is a CakePHP plugin to handle backups.
 
 To install:
 
-    $ composer require --prefer-dist composer require mirko-pagliai/database-backup
+    $ composer require --prefer-dist mirko-pagliai/database-backup
 
 ## Versioning
 For transparency and insight into our release cycle and to maintain backward compatibility, 
