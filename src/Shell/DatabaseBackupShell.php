@@ -49,7 +49,7 @@ class DatabaseBackupShell extends Shell {
 	 * @uses DatabaseBackup\Utility\DatabaseExport::directory()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::export()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
-	 * @uses DatabaseBackup\Utility\DatabaseExport::rotate()
+	 * @uses rotate()
 	 */
 	public function backup() {
 		try {
@@ -69,14 +69,14 @@ class DatabaseBackupShell extends Shell {
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
 			
-			//Sets the rotation
-			if($this->param('rotate'))
-				$backup->rotate($this->param('rotate'));
-			
 			//Creates the backup file
 			$file = $backup->export();
 			
 			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $file)));
+			
+			//Sets the rotation
+			if($this->param('rotate'))
+				$this->rotate($this->param('rotate'));
 		}
 		catch(InternalErrorException $e) {
 			$this->abort($e->getMessage());
