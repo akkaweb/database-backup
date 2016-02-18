@@ -28,7 +28,7 @@ use DatabaseBackup\Utility\BackupManager;
 use DatabaseBackup\Utility\DatabaseExport;
 
 /**
- * Shell to manage the database backups
+ * Shell to handle database backups
  */
 class BackupShell extends Shell {
 	/**
@@ -74,7 +74,7 @@ class BackupShell extends Shell {
 			
 			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $file)));
 			
-			//Sets the rotation
+			//Rotates backup files.
 			if($this->param('rotate'))
 				$this->rotate($this->param('rotate'));
 		}
@@ -164,17 +164,20 @@ class BackupShell extends Shell {
 						'short' => 'c'
 					],
 					'directory' => [
-						'help' => __d('database_backup', 'Alternative directory you want to use'),
+						'help' => __d('database_backup', 'Alternative directory you want to use. '
+								. 'It can be absolute or relative to the APP root. '
+								. 'By default, the {0} directory will be used', BACKUP),
 						'short' => 'd'
 					],
 					'filename' => [
-						'help' => __d('database_backup', 'Output file where to save the backup. It can be absolute or relative to the APP root. '
+						'help' => __d('database_backup', 'Filename to use to save the backup. '
 								. 'Using this method, the compression type will be automatically detected by the filename'),
 						'short' => 'f'
 					],
 					'rotate' => [
 						'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
-								. 'So, it will delete all backups that are older'),
+								. 'So, it will delete all backups that are older. '
+								. 'By default, no backup will be canceled'),
 						'short' => 'r'
 					]
 				]]
@@ -183,12 +186,15 @@ class BackupShell extends Shell {
 				'help' => __d('database_backup', 'Lists database backups'),
 				'parser' => ['options' => [
 					'directory' => [
-						'help' => __d('database_backup', 'Alternative directory you want to use'),
+						'help' => __d('database_backup', 'Alternative directory you want to use. '
+								. 'By default, the {0} directory will be used', BACKUP),
 						'short' => 'd'
 					]
 				]]
 			],
 			'rotate' => [
+				'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
+						. 'So, it will delete all backups that are older'),
 				'parser' => [
 					'arguments' => [
 						'keep' => [
@@ -198,7 +204,8 @@ class BackupShell extends Shell {
 					],
 					'options' => [
 						'directory' => [
-							'help' => __d('database_backup', 'Alternative directory you want to use'),
+							'help' => __d('database_backup', 'Alternative directory you want to use. '
+									. 'By default, the {0} directory will be used', BACKUP),
 							'short' => 'd'
 						]
 					]

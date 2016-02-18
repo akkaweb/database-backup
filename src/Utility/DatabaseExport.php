@@ -32,32 +32,35 @@ use DatabaseBackup\Utility\BackupManager;
  * Examples.
  * 
  * This will create a backup file with the `gzip` compression.  
- * By default, the file will be created in the `APP/backup` directory, with a default name.
+ * The file will be created in the default directory, with a default name.
+ * In addition, only 10 backup files will be kept, the oldest will be deleted.
  * <code>
  * $backup = new DatabaseExport();
  * $backup->compression('gzip');
+ * $backup->rotate(10);
  * $backup->export();
  * </code>
  * 
- * This will create the backup file `/opt/backups/mybackup.sql.bz2`.  
+ * This will create the backup file `mybackup.sql.bz2`. in the directory `/opt/backups`.
  * It will use the `bzip2` compression (is automatically detected by the filename).
  * <code>
  * $backup = new DatabaseExport();
- * $backup->filename('/opt/backups/mybackup.sql.bz2');
+ * $backup->directory('/opt/backups');
+ * $backup->filename('mybackup.sql.bz2');
  * $backup->export();
  * </code>
  */
 class DatabaseExport {
 	/**
 	 * Executable command.
-	 * This property is only for internal use of the class
+	 * This property is only for internal use of the class. You don't need to set it manually.
 	 * @var string 
 	 */
 	protected $_executable;
 	
 	/**
 	 * Filename extension.
-	 * This property is only for internal use of the class
+	 * This property is only for internal use of the class. You don't need to set it manually.
 	 * @var string
 	 */
 	protected $_extension;
@@ -105,7 +108,7 @@ class DatabaseExport {
 	protected $rotate;
 
 	/**
-	 * Construct. Sets some default properties
+	 * Construct. It sets some default properties
 	 * @uses compression()
 	 * @uses directory()
 	 */
@@ -152,7 +155,7 @@ class DatabaseExport {
 	}
 	
 	/**
-	 * Sets the database connection to use.
+	 * Sets the database connection to use and returns the connection parameters.
 	 * The connection must be defined in `APP/config/app.php`.
 	 * @param string $connection Connection name
 	 * @return array Connection parameters
@@ -193,9 +196,9 @@ class DatabaseExport {
 	 * Using this method, the compression type will be automatically detected by the filename.
 	 * @param string $filename Filename path
 	 * @return string Filename path
+	 * @uses compression()
 	 * @uses $directory
 	 * @uses $filename
-	 * @uses compression()
 	 * @throws InternalErrorException
 	 */
 	public function filename($filename) {		
