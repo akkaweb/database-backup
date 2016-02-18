@@ -23,7 +23,7 @@
 
 use Cake\Network\Exception\InternalErrorException;
 
-//Sets the database directory
+//Sets the default directory
 if(!defined('BACKUP'))
 	define('BACKUP', ROOT.DS.'backup');
 
