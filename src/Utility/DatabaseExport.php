@@ -22,6 +22,7 @@
  */
 namespace DatabaseBackup\Utility;
 
+use Cake\Filesystem\Folder;
 use Cake\Network\Exception\InternalErrorException;
 
 /**
@@ -65,7 +66,15 @@ class DatabaseExport {
 	protected $connection;
 	
 	/**
-	 * Executable command.
+	 * Output directory.
+	 * Use the `directory()` method to set the database connection.
+	 * @var string
+	 * @see directory()
+	 */
+	protected $directory;
+
+	/**
+	 * Executable command
 	 * @var string 
 	 */
 	protected $executable;
@@ -83,6 +92,17 @@ class DatabaseExport {
 	 * @see filename()
 	 */
 	protected $filename;
+	
+	/**
+	 * Construct. Sets some default properties
+	 * @uses compression()
+	 * @uses directory()
+	 */
+	public function __construct() {
+		//Sets default compression type and output directory
+		$this->compression('none');
+		$this->directory(BACKUP);
+	}
 	
 	/**
 	 * Sets the compression type.
@@ -138,20 +158,37 @@ class DatabaseExport {
 	}
 	
 	/**
+	 * Sets the output directory.
+	 * 
+	 * If the directory is relative, then will be relative to the APP root.
+	 * @param string $directory Directory path
+	 * @return string Directory path
+	 * @throws InternalErrorException
+	 * @uses $directory
+	 */
+	public function directory($directory) {
+		//If the directory is relative, then will be relative to the APP root
+		$directory = Folder::isAbsolute($directory) ? $directory : ROOT.DS.$directory;
+		
+		if(!is_writable($directory))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', $directory));
+		
+		return $this->directory = $directory;
+	}
+	
+	/**
 	 * Sets the filename where to export the database.
 	 * 
-	 * If the filename is relative, then it's relative to the APP root.
-	 * 
 	 * Using this method, the compression type will be automatically detected by the filename.
-	 * @param string $filename Filename path, absolute or relative (will be relative to the APP root) 
+	 * @param string $filename Filename path
 	 * @return string Filename path
+	 * @uses $directory
 	 * @uses $filename
 	 * @uses compression()
 	 * @throws InternalErrorException
 	 */
-	public function filename($filename) {
-		//If the filename is relative, then it's relative to the APP root
-		$filename = \Cake\Filesystem\Folder::isAbsolute(dirname($filename)) ? $filename : ROOT.DS.$filename;
+	public function filename($filename) {		
+		$filename = (Folder::isSlashTerm($this->directory) ? $this->directory : $this->directory.DS).$filename;
 		
 		if(!is_writable(dirname($filename)))
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', dirname($filename)));
@@ -171,27 +208,24 @@ class DatabaseExport {
 	/**
 	 * Exports the database
 	 * @return string Filename path
-	 * @uses $compression
 	 * @uses $connection
+	 * @uses $executable
 	 * @uses $extension
 	 * @uses $filename
-	 * @uses compression()
 	 * @uses connection()
 	 * @uses filename()
 	 * @throws InternalErrorException
 	 */
 	public function export() {
 		//Sets the default database connection
+		//This is not done in the constructor, because the "default" connection might not exist
 		if(empty($this->connection))
 			$this->connection('default');
-		
-		//Sets the default compression type (no compression)
-		if(empty($this->compression))
-			$this->compression('none');
-		
+				
 		//Sets the default filename where to export the database
+		//This is not done in the constructor, because you can set and alternative output directory
 		if(empty($this->filename))		
-			$this->filename(BACKUP.DS.sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->extension));
+			$this->filename(sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->extension));
 		
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
