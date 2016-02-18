@@ -49,6 +49,7 @@ class DatabaseBackupShell extends Shell {
 	 * @uses DatabaseBackup\Utility\DatabaseExport::directory()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::export()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
+	 * @uses DatabaseBackup\Utility\DatabaseExport::rotate()
 	 */
 	public function backup() {
 		try {
@@ -67,6 +68,10 @@ class DatabaseBackupShell extends Shell {
 				$backup->filename($this->param('filename'));
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
+			
+			//Sets the rotation
+			if($this->param('rotate'))
+				$backup->rotate($this->param('rotate'));
 			
 			//Creates the backup file
 			$file = $backup->export();
@@ -166,6 +171,11 @@ class DatabaseBackupShell extends Shell {
 						'help' => __d('database_backup', 'Output file where to save the backup. It can be absolute or relative to the APP root. '
 								. 'Using this method, the compression type will be automatically detected by the filename'),
 						'short' => 'f'
+					],
+					'rotate' => [
+						'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
+								. 'So, it will delete all backups that are older'),
+						'short' => 'r'
 					]
 				]]
 			],

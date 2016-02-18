@@ -24,6 +24,7 @@ namespace DatabaseBackup\Utility;
 
 use Cake\Filesystem\Folder;
 use Cake\Network\Exception\InternalErrorException;
+use DatabaseBackup\Utility\BackupManager;
 
 /**
  * Utility to export the database.
@@ -95,6 +96,14 @@ class DatabaseExport {
 	 */
 	protected $filename;
 	
+	/**
+	 * Rotate. This is the number of backups you want to keep. So, it will delete all backups that are older.
+	 * Use the `rotate()` method to set the filename where to export the database.
+	 * @var int
+	 * @see rotate()
+	 */
+	protected $rotate;
+
 	/**
 	 * Construct. Sets some default properties
 	 * @uses compression()
@@ -210,12 +219,15 @@ class DatabaseExport {
 	/**
 	 * Exports the database
 	 * @return string Filename path
+	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
+	 * @uses connection()
+	 * @uses filename()
 	 * @uses $_executable
 	 * @uses $_extension
 	 * @uses $connection
+	 * @uses $directory
 	 * @uses $filename
-	 * @uses connection()
-	 * @uses filename()
+	 * @uses $rotate
 	 * @throws InternalErrorException
 	 */
 	public function export() {
@@ -244,6 +256,20 @@ class DatabaseExport {
 		if(!is_readable($this->filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` has not been created', $filename));
 		
+		//Rotates backups
+		if(!empty($this->rotate))
+			BackupManager::rotate($this->rotate, $this->directory);
+		
 		return $this->filename;
+	}
+	
+	/**
+	 * Sets the number of backups you want to keep. So, it will delete all backups that are older
+	 * @param int $rotate Number of backups you want to keep
+	 * @return int Number of backups you want to keep
+	 * @uses $rotate
+	 */
+	public function rotate($rotate) {
+		return $this->rotate = $rotate;
 	}
 }
