@@ -24,6 +24,7 @@ namespace DatabaseBackup\Shell;
 
 use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
+use DatabaseBackup\Utility\BackupManager;
 
 /**
  * Shell to manage the database backups.
@@ -36,6 +37,7 @@ class DatabaseBackupShell extends Shell {
 	public function initialize() {
         parent::initialize();
 		
+		//Adds the `<success>` tag for `out()` method
 		$this->_io->styles('success', ['text' => 'green']);
 	}
 	
@@ -70,16 +72,19 @@ class DatabaseBackupShell extends Shell {
 	
 	/**
 	 * Lists database backups
-	 * @uses DatabaseBackup\Utility\BackupManager::getList()
+	 * @uses DatabaseBackup\Utility\BackupManager::index()
 	 */
 	public function index() {
 		//Sets the directory
 		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
-				
-		$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
 		
 		try {
-			if($files = \DatabaseBackup\Utility\BackupManager::getList($dir)) {
+			$files = BackupManager::index($dir);
+					
+			if(!empty($files)) {
+				$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
+				$this->out(__d('database_backup', 'Backup files found: {0}', count($files)), 2);
+				
 				//Re-indexes and filters
 				$files = array_map(function($file) {
 					return [$file['filename'], $file['compression'], $file['datetime']];
@@ -92,10 +97,36 @@ class DatabaseBackupShell extends Shell {
 					__d('database_backup', 'Datetime')
 				];
 
-				// Output 1 newlines
-				$this->out($this->nl(1));
 				$this->helper('table')->output(array_merge([$headers], $files));
 			}
+		}
+		catch(InternalErrorException $e) {
+			$this->abort($e->getMessage());
+		}
+	}
+	
+	/**
+	 * Rotates backups.
+	 * 
+	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
+	 * @param int $limit Number of files that you want to keep
+	 */
+	public function rotate($limit) {
+		//Sets the directory
+		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
+		
+		try {
+			$deleted = BackupManager::rotate($limit, $dir);
+			
+			if($deleted) {
+				foreach($deleted as $file)
+					$this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
+				
+				$this->out(sprintf('<success>%s</success>', __d('database_backup', 'Deleted backup files: {0}', count($deleted))));
+			}
+			else
+				$this->verbose(__d('database_backup', 'No file has been deleted'));
+		
 		}
 		catch(InternalErrorException $e) {
 			$this->abort($e->getMessage());
@@ -130,10 +161,26 @@ class DatabaseBackupShell extends Shell {
 				'help' => __d('database_backup', 'Lists database backups'),
 				'parser' => ['options' => [
 					'directory' => [
-						'help' => __d('database_backup', 'Alternative directory from which to read backups'),
+						'help' => __d('database_backup', 'Alternative directory you want to use'),
 						'short' => 'd'
 					]
 				]]
+			],
+			'rotate' => [
+				'parser' => [
+					'arguments' => [
+						'limit' => [
+							'help' => __d('database_backup', 'Limit for the backup rotation. It indicates the number of backups you want to keep'),
+							'required' => TRUE
+						]
+					],
+					'options' => [
+						'directory' => [
+							'help' => __d('database_backup', 'Alternative directory you want to use'),
+							'short' => 'd'
+						]
+					]
+				]				
 			]
 		]);
 	}
