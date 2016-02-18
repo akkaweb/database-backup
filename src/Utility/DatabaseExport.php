@@ -48,6 +48,20 @@ use Cake\Network\Exception\InternalErrorException;
  */
 class DatabaseExport {
 	/**
+	 * Executable command.
+	 * This property is only for internal use of the class
+	 * @var string 
+	 */
+	protected $_executable;
+	
+	/**
+	 * Filename extension.
+	 * This property is only for internal use of the class
+	 * @var string
+	 */
+	protected $_extension;
+	
+	/**
 	 * Compression type. 
 	 * Use the `compression()` method to set the compression type.
 	 * With the `filename()` method, the compression type will be automatically set.
@@ -72,18 +86,6 @@ class DatabaseExport {
 	 * @see directory()
 	 */
 	protected $directory;
-
-	/**
-	 * Executable command
-	 * @var string 
-	 */
-	protected $executable;
-	
-	/**
-	 * Filename extension
-	 * @var string
-	 */
-	protected $extension;
 	
 	/**
 	 * Filename where to export the database.
@@ -110,27 +112,27 @@ class DatabaseExport {
 	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
 	 * @return string Compression type
+	 * @uses $_executable
+	 * @uses $_extension
 	 * @uses $compression
-	 * @uses $executable
-	 * @uses $extension
 	 * @throws InternalErrorException
 	 */
 	public function compression($compression) {
 		switch($compression) {
 			case 'gzip':
+				$this->_executable = 'mysqldump --defaults-file=%s %s | gzip > %s';
+				$this->_extension = 'sql.gz';
 				$this->compression = 'gzip';
-				$this->executable = 'mysqldump --defaults-file=%s %s | gzip > %s';
-				$this->extension = 'sql.gz';
 				break;
 			case 'bzip2':
+				$this->_executable = 'mysqldump --defaults-file=%s %s | bzip2 > %s';
+				$this->_extension = 'sql.bz2';
 				$this->compression = 'bzip2';
-				$this->executable = 'mysqldump --defaults-file=%s %s | bzip2 > %s';
-				$this->extension = 'sql.bz2';
 				break;
 			case 'none':
+				$this->_executable = 'mysqldump --defaults-file=%s %s > %s';
+				$this->_extension = 'sql';
 				$this->compression = 'none';
-				$this->executable = 'mysqldump --defaults-file=%s %s > %s';
-				$this->extension = 'sql';
 				break;
 			default:
 				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
@@ -208,9 +210,9 @@ class DatabaseExport {
 	/**
 	 * Exports the database
 	 * @return string Filename path
+	 * @uses $_executable
+	 * @uses $_extension
 	 * @uses $connection
-	 * @uses $executable
-	 * @uses $extension
 	 * @uses $filename
 	 * @uses connection()
 	 * @uses filename()
@@ -225,7 +227,7 @@ class DatabaseExport {
 		//Sets the default filename where to export the database
 		//This is not done in the constructor, because you can set and alternative output directory
 		if(empty($this->filename))		
-			$this->filename(sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->extension));
+			$this->filename(sprintf('backup_%s_%s.%s', $this->connection['database'], date('YmdHis'), $this->_extension));
 		
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
@@ -234,7 +236,7 @@ class DatabaseExport {
 		file_put_contents($mysqldump, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", $this->connection['username'], $this->connection['password'], $this->connection['host']));
 		
 		//Executes
-		exec(sprintf($this->executable, $mysqldump, $this->connection['database'], $this->filename));
+		exec(sprintf($this->_executable, $mysqldump, $this->connection['database'], $this->filename));
 		
 		//Deletes the temporary file
 		unlink($mysqldump);
