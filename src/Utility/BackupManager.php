@@ -52,9 +52,13 @@ class BackupManager {
 	 * Gets a list of database backups
 	 * @param string $dir Alternative directory you want to use
 	 * @return array
+	 * @throws InternalErrorException
 	 */
 	public static function index($dir = NULL) {
 		$dir = empty($dir) ? BACKUP : $dir;
+		
+		if(!is_readable($dir))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not readable', $dir));
 		
 		//Gets all files
 		$files = array_values((new \Cake\Filesystem\Folder($dir))->read()[1]);
