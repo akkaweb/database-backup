@@ -23,14 +23,34 @@
 namespace DatabaseBackup\Utility;
 
 use Cake\Filesystem\File;
+use Cake\Network\Exception\InternalErrorException;
 
 /**
  * Utility to handle database backups
  */
 class BackupManager {
 	/**
+	 * Deletes a backup file
+	 * @param string $filename Filename
+	 * @param string $dir Alternative directory you want to use
+	 * @return boolean
+	 * @throws InternalErrorException
+	 */
+	public static function delete($filename, $dir = NULL) {
+		$file = (empty($dir) ? BACKUP : $dir).DS.$filename;
+		
+		if(!is_writable($file))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', $file));
+		
+		if(!(new File($file))->delete())
+			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $file));
+		
+		return TRUE;
+	}
+	
+	/**
 	 * Gets a list of database backups
-	 * @param string $dir Alternative directory from which to read backups
+	 * @param string $dir Alternative directory you want to use
 	 * @return array
 	 */
 	public static function index($dir = NULL) {
@@ -66,5 +86,34 @@ class BackupManager {
 		});
 		
 		return empty($files) ? [] : $files;
+	}
+	
+	/**
+	 * Rotates backups.
+	 * 
+	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
+	 * @param int $keep Number of files that you want to keep
+	 * @param string $dir Alternative directory you want to use
+	 * @return int Number of files that have been deleted
+	 * @uses delete()
+	 * @uses index()
+	 */
+	public static function rotate($keep, $dir = NULL) {
+		$dir = empty($dir) ? BACKUP : $dir;
+		
+		//Returns, if the number of files to keep is larger than the number of files that are present
+		if($keep >= count($files))
+			return FALSE;
+		
+		$files = self::index($dir);
+		
+		//The number of files to be deleted is equal to the number of files that are present less the number of files that you want to keep
+		$diff = count($files) - $keep;
+		
+		//Deletes
+		foreach(array_slice($files, -$diff, $diff) as $file)
+			self::delete($file['filename'], $dir);
+		
+		return $diff;
 	}
 }
