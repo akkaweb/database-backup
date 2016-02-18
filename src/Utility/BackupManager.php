@@ -99,10 +99,12 @@ class BackupManager {
 	 * @param int $keep Number of files that you want to keep
 	 * @param string $dir Alternative directory you want to use
 	 * @return array Files that have been deleted
-	 * @uses delete()
-	 * @uses index()
+	 * @throws InternalErrorException
 	 */
 	public static function rotate($keep, $dir = NULL) {
+		if($keep <= 0 || !ctype_digit($keep))
+			throw new InternalErrorException(__d('database_backup', 'Invalid value for the rotation', $keep));
+		
 		$dir = empty($dir) ? BACKUP : $dir;
 		
 		//Gets all files
