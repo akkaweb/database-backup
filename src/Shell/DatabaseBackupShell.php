@@ -109,14 +109,14 @@ class DatabaseBackupShell extends Shell {
 	 * Rotates backups.
 	 * 
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
-	 * @param int $limit Number of files that you want to keep
+	 * @param int $keep Number of files that you want to keep
 	 */
-	public function rotate($limit) {
+	public function rotate($keep) {
 		//Sets the directory
 		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
 		
 		try {
-			$deleted = BackupManager::rotate($limit, $dir);
+			$deleted = BackupManager::rotate($keep, $dir);
 			
 			if($deleted) {
 				foreach($deleted as $file)
@@ -169,8 +169,8 @@ class DatabaseBackupShell extends Shell {
 			'rotate' => [
 				'parser' => [
 					'arguments' => [
-						'limit' => [
-							'help' => __d('database_backup', 'Limit for the backup rotation. It indicates the number of backups you want to keep'),
+						'keep' => [
+							'help' => __d('database_backup', 'Number of backups you want to keep'),
 							'required' => TRUE
 						]
 					],
