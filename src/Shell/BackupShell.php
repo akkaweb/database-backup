@@ -43,7 +43,7 @@ class BackupShell extends Shell {
 	}
 	
 	/**
-	 * Creates a database backup
+	 * Exports a database backup
 	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::compression()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::directory()
@@ -51,7 +51,7 @@ class BackupShell extends Shell {
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
 	 * @uses rotate()
 	 */
-	public function backup() {
+	public function export() {
 		try {
 			$backup = new DatabaseExport();
 		
@@ -154,8 +154,8 @@ class BackupShell extends Shell {
 		$parser = parent::getOptionParser();
 		
 		return $parser->addSubcommands([
-			'backup' => [
-				'help' => __d('database_backup', 'Creates a database backup'),
+			'export' => [
+				'help' => __d('database_backup', 'Exports a database backup'),
 				'parser' => ['options' => [
 					'connection' => ['help' => __d('database_backup', 'Database connection to use')],
 					'compression'	=> [
