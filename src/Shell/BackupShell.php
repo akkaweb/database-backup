@@ -30,18 +30,7 @@ use DatabaseBackup\Utility\DatabaseExport;
 /**
  * Shell to handle database backups
  */
-class BackupShell extends Shell {
-	/**
-	 * Initializes the Shell acts as constructor for subclasses allows configuration of tasks prior to shell execution
-	 * @uses Cake\Console\Shell::initialize()
-	 */
-	public function initialize() {
-        parent::initialize();
-		
-		//Adds the `<success>` tag for `out()` method
-		$this->_io->styles('success', ['text' => 'green']);
-	}
-	
+class BackupShell extends Shell {	
 	/**
 	 * Exports a database backup
 	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
@@ -72,7 +61,7 @@ class BackupShell extends Shell {
 			//Creates the backup file
 			$file = $backup->export();
 			
-			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $file)));
+			$this->success(__d('database_backup', 'The file {0} has been created', $file));
 			
 			//Rotates backup files.
 			if($this->param('rotate'))
@@ -135,7 +124,7 @@ class BackupShell extends Shell {
 				foreach($deleted as $file)
 					$this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
 				
-				$this->out(sprintf('<success>%s</success>', __d('database_backup', 'Deleted backup files: {0}', count($deleted))));
+				$this->success(__d('database_backup', 'Deleted backup files: {0}', count($deleted)));
 			}
 			else
 				$this->verbose(__d('database_backup', 'No file has been deleted'));
