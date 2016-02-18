@@ -25,6 +25,7 @@ namespace DatabaseBackup\Shell;
 use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
 use DatabaseBackup\Utility\BackupManager;
+use DatabaseBackup\Utility\DatabaseExport;
 
 /**
  * Shell to manage the database backups.
@@ -45,25 +46,32 @@ class DatabaseBackupShell extends Shell {
 	 * Creates a database backup
 	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::compression()
+	 * @uses DatabaseBackup\Utility\DatabaseExport::directory()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::export()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
 	 */
 	public function backup() {
 		try {
-			$backup = new \DatabaseBackup\Utility\DatabaseExport();
+			$backup = new DatabaseExport();
 		
-			//Sets the connection parameter
+			//Sets the database connection
 			if($this->param('connection'))
 				$backup->connection($this->param('connection'));
 
-			//Sets the output file or the compression parameters
-			if($this->param('output'))
-				$backup->filename($this->param('output'));
+			//Sets the output directory
+			if($this->param('directory'))
+				$backup->directory($this->param('directory'));
+			
+			//Sets the output filename or the compression type
+			if($this->param('filename'))
+				$backup->filename($this->param('filename'));
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
 			
 			//Creates the backup file
-			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $backup->export())));
+			$file = $backup->export();
+			
+			$this->out(sprintf('<success>%s</success>', __d('database_backup', 'The file {0} has been created', $file)));
 		}
 		catch(InternalErrorException $e) {
 			$this->abort($e->getMessage());
@@ -150,10 +158,14 @@ class DatabaseBackupShell extends Shell {
 						'help' => __d('database_backup', 'Compression type. By default, no compression will be used'),
 						'short' => 'c'
 					],
-					'output' => [
+					'directory' => [
+						'help' => __d('database_backup', 'Alternative directory you want to use'),
+						'short' => 'd'
+					],
+					'filename' => [
 						'help' => __d('database_backup', 'Output file where to save the backup. It can be absolute or relative to the APP root. '
 								. 'Using this method, the compression type will be automatically detected by the filename'),
-						'short' => 'o'
+						'short' => 'f'
 					]
 				]]
 			],
