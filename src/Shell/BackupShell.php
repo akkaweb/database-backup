@@ -28,9 +28,9 @@ use DatabaseBackup\Utility\BackupManager;
 use DatabaseBackup\Utility\DatabaseExport;
 
 /**
- * Shell to manage the database backups.
+ * Shell to manage the database backups
  */
-class DatabaseBackupShell extends Shell {
+class BackupShell extends Shell {
 	/**
 	 * Initializes the Shell acts as constructor for subclasses allows configuration of tasks prior to shell execution
 	 * @uses Cake\Console\Shell::initialize()
