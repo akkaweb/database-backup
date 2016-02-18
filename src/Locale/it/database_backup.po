@@ -1,0 +1,151 @@
+# LANGUAGE translation of DatabaseBackup
+# Copyright 2016 Mirko Pagliai <mirko.pagliai@gmail.com>
+#
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-02-18 16:03+0000\n"
+"PO-Revision-Date: 2016-02-18 17:10+0100\n"
+"Last-Translator: Mirko Pagliai <mirko.pagliai.it>\n"
+"Language-Team: Italian <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it\n"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:75
+msgid "The file {0} has been created"
+msgstr "Il file {0} è stato creato"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:98
+msgid "Backup files for {0}"
+msgstr "File di backup per {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:99
+msgid "Backup files found: {0}"
+msgstr "File di backup trovati: {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:108
+msgid "Filename"
+msgstr "Filename"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:109
+msgid "Compression type"
+msgstr "Tipo di compressione"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:110
+msgid "Datetime"
+msgstr "Data e orario"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:136
+msgid "The file {0} has been deleted"
+msgstr "Il file {0} è stato cancellato"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:138
+msgid "Deleted backup files: {0}"
+msgstr "File di backup cancellati: {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:141
+msgid "No file has been deleted"
+msgstr "Nessun file è stato cancellato"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:158
+msgid "Exports a database backup"
+msgstr "Esporta un backup del database"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:160
+msgid "Database connection to use"
+msgstr "Connessione del database da utilizzare"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:163
+msgid "Compression type. By default, no compression will be used"
+msgstr "Tipo di compressione. Di default, nessuna compressione sarà utilizzata"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:167
+msgid ""
+"Alternative directory you want to use. It can be absolute or relative to the "
+"APP root. By default, the {0} directory will be used"
+msgstr ""
+"Directory alternativa da utilizzare. Può essere assoluta o relativa alla root "
+"dell'APP, Di default, verrà utilizzata la directory {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:173
+msgid ""
+"Filename to use to save the backup. Using this method, the compression type "
+"will be automatically detected by the filename"
+msgstr ""
+"Filename da utilizzare per salvare il backup. Usando questo modo, il tipo di "
+"compressione sarà rilevato automaticamente dal filename"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:178
+msgid ""
+"Rotates backups. You must indicate the number of backups you want to keep. "
+"So, it will delete all backups that are older. By default, no backup will be "
+"canceled"
+msgstr ""
+"Esegue la rotazione dei backup. Devi indicare il numero di backup che vuoi "
+"mantenere. Così, cancellerà tutti i backup più vecchi. Di default nessun "
+"backup verrà cancellato"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:186
+msgid "Lists database backups"
+msgstr "Elenca i backup del database"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:189;207
+msgid ""
+"Alternative directory you want to use. By default, the {0} directory will be "
+"used"
+msgstr ""
+"Directory alternativa da utilizzare, Di default, verrà utilizzata la "
+"directory {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:196
+msgid ""
+"Rotates backups. You must indicate the number of backups you want to keep. "
+"So, it will delete all backups that are older"
+msgstr ""
+"Esegue la rotazione dei backup. Devi indicare il numero di backup che vuoi "
+"mantenere. Così, cancellerà tutti i backup più vecchi"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:201
+msgid "Number of backups you want to keep"
+msgstr "Numero di backup che vuoi mantenere"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:43
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:188;208
+msgid "File or directory `{0}` not writeable"
+msgstr "File o directory {0} non scrivibile"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:46
+msgid "Impossible to delete the file {0}"
+msgstr "Impossibile cancellare il file {0}"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:61
+msgid "File or directory `{0}` not readable"
+msgstr "File o directory {0} non leggibile"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:106
+msgid "Invalid value for the rotation"
+msgstr "Valore non valido per la rotazione"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:150
+msgid "Compression type not supported"
+msgstr "Tipo di compressione non supportato"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:169
+msgid "Invalid connection"
+msgstr "Connessione non valida"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:211
+msgid "File or directory `{0}` already exists"
+msgstr "File o directory `{0}` già esistente"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:215
+msgid "Invalid file extension"
+msgstr "Estensione del file non valida"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:260
+msgid "File or directory `{0}` has not been created"
+msgstr "Il file o la directory `{0}`non è stato creato"
+
+

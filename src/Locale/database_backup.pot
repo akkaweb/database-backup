@@ -1,0 +1,128 @@
+# LANGUAGE translation of DatabaseBackup
+# Copyright 2016 Mirko Pagliai <mirko.pagliai@gmail.com>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-02-18 16:03+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:75
+msgid "The file {0} has been created"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:98
+msgid "Backup files for {0}"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:99
+msgid "Backup files found: {0}"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:108
+msgid "Filename"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:109
+msgid "Compression type"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:110
+msgid "Datetime"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:136
+msgid "The file {0} has been deleted"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:138
+msgid "Deleted backup files: {0}"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:141
+msgid "No file has been deleted"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:158
+msgid "Exports a database backup"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:160
+msgid "Database connection to use"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:163
+msgid "Compression type. By default, no compression will be used"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:167
+msgid "Alternative directory you want to use. It can be absolute or relative to the APP root. By default, the {0} directory will be used"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:173
+msgid "Filename to use to save the backup. Using this method, the compression type will be automatically detected by the filename"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:178
+msgid "Rotates backups. You must indicate the number of backups you want to keep. So, it will delete all backups that are older. By default, no backup will be canceled"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:186
+msgid "Lists database backups"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:189;207
+msgid "Alternative directory you want to use. By default, the {0} directory will be used"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:196
+msgid "Rotates backups. You must indicate the number of backups you want to keep. So, it will delete all backups that are older"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Shell/BackupShell.php:201
+msgid "Number of backups you want to keep"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:43
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:188;208
+msgid "File or directory `{0}` not writeable"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:46
+msgid "Impossible to delete the file {0}"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:61
+msgid "File or directory `{0}` not readable"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/BackupManager.php:106
+msgid "Invalid value for the rotation"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:150
+msgid "Compression type not supported"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:169
+msgid "Invalid connection"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:211
+msgid "File or directory `{0}` already exists"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:215
+msgid "Invalid file extension"
+msgstr ""
+
+#: /home/mirko/Server/DatabaseBackup_Plugin/src/Utility/DatabaseExport.php:260
+msgid "File or directory `{0}` has not been created"
+msgstr ""
+
