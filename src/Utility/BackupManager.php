@@ -98,26 +98,32 @@ class BackupManager {
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
 	 * @param int $keep Number of files that you want to keep
 	 * @param string $dir Alternative directory you want to use
-	 * @return int Number of files that have been deleted
+	 * @return array Files that have been deleted
 	 * @uses delete()
 	 * @uses index()
 	 */
 	public static function rotate($keep, $dir = NULL) {
 		$dir = empty($dir) ? BACKUP : $dir;
 		
+		//Gets all files
+		$files = self::index($dir);
+		
 		//Returns, if the number of files to keep is larger than the number of files that are present
 		if($keep >= count($files))
 			return FALSE;
 		
-		$files = self::index($dir);
-		
 		//The number of files to be deleted is equal to the number of files that are present less the number of files that you want to keep
 		$diff = count($files) - $keep;
 		
-		//Deletes
-		foreach(array_slice($files, -$diff, $diff) as $file)
-			self::delete($file['filename'], $dir);
+		//Files that will be deleted
+		$files = array_map(function($file) {
+			return $file['filename'];
+		}, array_slice($files, -$diff, $diff));
 		
-		return $diff;
+		//Deletes
+		foreach($files as $file)
+			self::delete($file, $dir);
+		
+		return $files;
 	}
 }
