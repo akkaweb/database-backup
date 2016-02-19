@@ -51,7 +51,7 @@ class BackupManager {
 	/**
 	 * Gets a list of database backups
 	 * @param string $dir Alternative directory you want to use
-	 * @return array
+	 * @return array, with objects of backups
 	 * @throws InternalErrorException
 	 */
 	public static function index($dir = NULL) {
@@ -75,18 +75,18 @@ class BackupManager {
 				$datetime = preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1]);
 			else
 				$datetime = date('Y-m-d H:i:s', (new File($dir.DS.$file))->lastChange());
-									
-			return [
+			
+			return (object) [
 				'filename' => $file,
 				'extension' => $matches[2],
 				'compression' => get_compression($matches[2]),
-				'datetime' => $datetime
+				'datetime' => new \Cake\I18n\FrozenTime($datetime)
 			];
 		}, $files));
 		
 		//Re-orders, using the datetime value
 		usort($files, function($a, $b) {
-			return preg_replace('/\D/', NULL, $b['datetime']) - preg_replace('/\D/', NULL, $a['datetime']);
+			return preg_replace('/\D/', NULL, $b->datetime) - preg_replace('/\D/', NULL, $a->datetime);
 		});
 		
 		return empty($files) ? [] : $files;
@@ -119,7 +119,7 @@ class BackupManager {
 		
 		//Files that will be deleted
 		$files = array_map(function($file) {
-			return $file['filename'];
+			return $file->filename;
 		}, array_slice($files, -$diff, $diff));
 		
 		//Deletes

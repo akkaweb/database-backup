@@ -89,7 +89,7 @@ class BackupShell extends Shell {
 				
 				//Re-indexes and filters
 				$files = array_map(function($file) {
-					return [$file['filename'], $file['compression'], $file['datetime']];
+					return [$file->filename, $file->compression, $file->datetime];
 				}, $files);
 
 				//Table headers
