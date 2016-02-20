@@ -33,7 +33,7 @@ class BackupManager {
 	 * Deletes a backup file
 	 * @param string $filename Filename
 	 * @param string $dir Alternative directory you want to use
-	 * @return boolean
+	 * @return string File path
 	 * @throws InternalErrorException
 	 */
 	public static function delete($filename, $dir = NULL) {
@@ -45,7 +45,7 @@ class BackupManager {
 		if(!(new File($file))->delete())
 			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $file));
 		
-		return TRUE;
+		return $file;
 	}
 	
 	/**
