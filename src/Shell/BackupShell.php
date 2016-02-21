@@ -82,11 +82,14 @@ class BackupShell extends Shell {
 		
 		try {
 			$files = BackupManager::index($dir);
+			
+			$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
+			$this->out(__d('database_backup', 'Backup files found: {0}', count($files)));
 					
 			if(!empty($files)) {
-				$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
-				$this->out(__d('database_backup', 'Backup files found: {0}', count($files)), 2);
-				
+				// Output newline
+				$this->out($this->nl());
+
 				//Re-indexes and filters
 				$files = array_map(function($file) {
 					return [$file->filename, $file->compression, $file->datetime];
