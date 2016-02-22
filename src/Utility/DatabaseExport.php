@@ -259,7 +259,7 @@ class DatabaseExport {
 		if(!is_readable($this->filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` has not been created', $filename));
 		
-		@chmod($this->filename, 0755);
+		@chmod($this->filename, 0766);
 		
 		//Rotates backups
 		if(!empty($this->rotate))
