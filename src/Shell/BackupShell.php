@@ -35,7 +35,6 @@ class BackupShell extends Shell {
 	 * Exports a database backup
 	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::compression()
-	 * @uses DatabaseBackup\Utility\DatabaseExport::directory()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::export()
 	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
 	 * @uses rotate()
@@ -47,10 +46,6 @@ class BackupShell extends Shell {
 			//Sets the database connection
 			if($this->param('connection'))
 				$backup->connection($this->param('connection'));
-
-			//Sets the output directory
-			if($this->param('directory'))
-				$backup->directory($this->param('directory'));
 			
 			//Sets the output filename or the compression type
 			if($this->param('filename'))
@@ -77,32 +72,23 @@ class BackupShell extends Shell {
 	 * @uses DatabaseBackup\Utility\BackupManager::index()
 	 */
 	public function index() {
-		//Sets the directory
-		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
-		
 		try {
-			$files = BackupManager::index($dir);
+			//Gets alla files
+			$files = BackupManager::index();
 			
-			$this->out(__d('database_backup', 'Backup files for {0}', sprintf('<info>%s</info>', $dir)));
 			$this->out(__d('database_backup', 'Backup files found: {0}', count($files)));
 					
 			if(!empty($files)) {
-				// Output newline
-				$this->out($this->nl());
-
 				//Re-indexes and filters
 				$files = array_map(function($file) {
 					return [$file->filename, $file->compression, $file->datetime];
 				}, $files);
 
-				//Table headers
-				$headers = [
+				$this->helper('table')->output(array_merge([[
 					__d('database_backup', 'Filename'),
 					__d('database_backup', 'Compression type'),
 					__d('database_backup', 'Datetime')
-				];
-
-				$this->helper('table')->output(array_merge([$headers], $files));
+				]], $files));
 			}
 		}
 		catch(InternalErrorException $e) {
@@ -115,15 +101,11 @@ class BackupShell extends Shell {
 	 * 
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
 	 * @param int $keep Number of files that you want to keep
+	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
 	 */
 	public function rotate($keep) {
-		//Sets the directory
-		$dir = $this->param('directory') ? $this->param('directory') : BACKUP;
-		
 		try {
-			$deleted = BackupManager::rotate($keep, $dir);
-			
-			if($deleted) {
+			if($deleted = BackupManager::rotate($keep)) {
 				foreach($deleted as $file)
 					$this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
 				
@@ -149,17 +131,13 @@ class BackupShell extends Shell {
 			'export' => [
 				'help' => __d('database_backup', 'Exports a database backup'),
 				'parser' => ['options' => [
-					'connection' => ['help' => __d('database_backup', 'Database connection to use')],
-					'compression'	=> [
+					'connection' => [
+						'help' => __d('database_backup', 'Database connection to use')
+					],
+					'compression' => [
 						'choices' => ['gzip', 'bzip2', 'none'],
 						'help' => __d('database_backup', 'Compression type. By default, no compression will be used'),
 						'short' => 'c'
-					],
-					'directory' => [
-						'help' => __d('database_backup', 'Alternative directory you want to use. '
-								. 'It can be absolute or relative to the APP root. '
-								. 'By default, the {0} directory will be used', BACKUP),
-						'short' => 'd'
 					],
 					'filename' => [
 						'help' => __d('database_backup', 'Filename to use to save the backup. '
@@ -175,33 +153,17 @@ class BackupShell extends Shell {
 				]]
 			],
 			'index' => [
-				'help' => __d('database_backup', 'Lists database backups'),
-				'parser' => ['options' => [
-					'directory' => [
-						'help' => __d('database_backup', 'Alternative directory you want to use. '
-								. 'By default, the {0} directory will be used', BACKUP),
-						'short' => 'd'
-					]
-				]]
+				'help' => __d('database_backup', 'Lists database backups')
 			],
 			'rotate' => [
 				'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
 						. 'So, it will delete all backups that are older'),
-				'parser' => [
-					'arguments' => [
-						'keep' => [
-							'help' => __d('database_backup', 'Number of backups you want to keep'),
-							'required' => TRUE
-						]
-					],
-					'options' => [
-						'directory' => [
-							'help' => __d('database_backup', 'Alternative directory you want to use. '
-									. 'By default, the {0} directory will be used', BACKUP),
-							'short' => 'd'
-						]
+				'parser' => ['arguments' => [
+					'keep' => [
+						'help' => __d('database_backup', 'Number of backups you want to keep'),
+						'required' => TRUE
 					]
-				]				
+				]]				
 			]
 		]);
 	}

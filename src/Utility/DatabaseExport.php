@@ -22,7 +22,6 @@
  */
 namespace DatabaseBackup\Utility;
 
-use Cake\Filesystem\Folder;
 use Cake\Network\Exception\InternalErrorException;
 use DatabaseBackup\Utility\BackupManager;
 
@@ -31,8 +30,7 @@ use DatabaseBackup\Utility\BackupManager;
  * 
  * Examples.
  * 
- * This will create a backup file with the `gzip` compression.  
- * The file will be created in the default directory, with a default name.
+ * This will create a backup file with the `gzip` compression and a default filename.
  * In addition, only 10 backup files will be kept, the oldest will be deleted.
  * <code>
  * $backup = new DatabaseExport();
@@ -41,11 +39,10 @@ use DatabaseBackup\Utility\BackupManager;
  * $backup->export();
  * </code>
  * 
- * This will create the backup file `mybackup.sql.bz2`. in the directory `/opt/backups`.
+ * This will create the backup file `mybackup.sql.bz2`.
  * It will use the `bzip2` compression (is automatically detected by the filename).
  * <code>
  * $backup = new DatabaseExport();
- * $backup->directory('/opt/backups');
  * $backup->filename('mybackup.sql.bz2');
  * $backup->export();
  * </code>
@@ -84,14 +81,6 @@ class DatabaseExport {
 	protected $connection;
 	
 	/**
-	 * Output directory.
-	 * Use the `directory()` method to set the database connection.
-	 * @var string
-	 * @see directory()
-	 */
-	protected $directory;
-	
-	/**
 	 * Filename where to export the database.
 	 * Use the `filename()` method to set the filename where to export the database.
 	 * @var string
@@ -106,17 +95,6 @@ class DatabaseExport {
 	 * @see rotate()
 	 */
 	protected $rotate;
-
-	/**
-	 * Construct. It sets some default properties
-	 * @uses compression()
-	 * @uses directory()
-	 */
-	public function __construct() {
-		//Sets default compression type and output directory
-		$this->compression('none');
-		$this->directory(BACKUP);
-	}
 	
 	/**
 	 * Sets the compression type.
@@ -172,37 +150,18 @@ class DatabaseExport {
 	}
 	
 	/**
-	 * Sets the output directory.
-	 * 
-	 * If the directory is relative, then will be relative to the APP root.
-	 * @param string $directory Directory path
-	 * @return string Directory path
-	 * @throws InternalErrorException
-	 * @uses $directory
-	 */
-	public function directory($directory) {
-		//If the directory is relative, then will be relative to the APP root
-		$directory = Folder::isAbsolute($directory) ? $directory : ROOT.DS.$directory;
-		
-		if(!is_writable($directory))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', $directory));
-		
-		return $this->directory = $directory;
-	}
-	
-	/**
 	 * Sets the filename where to export the database.
 	 * 
 	 * Using this method, the compression type will be automatically detected by the filename.
 	 * @param string $filename Filename path
 	 * @return string Filename path
+	 * @uses DatabaseBackup\Utility\BackupManager::path()
 	 * @uses compression()
-	 * @uses $directory
 	 * @uses $filename
 	 * @throws InternalErrorException
 	 */
-	public function filename($filename) {		
-		$filename = (Folder::isSlashTerm($this->directory) ? $this->directory : $this->directory.DS).$filename;
+	public function filename($filename) {
+		$filename = BackupManager::path($filename);
 		
 		if(!is_writable(dirname($filename)))
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', dirname($filename)));
@@ -223,10 +182,12 @@ class DatabaseExport {
 	 * Exports the database
 	 * @return string Filename path
 	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
+	 * @uses compression()
 	 * @uses connection()
 	 * @uses filename()
 	 * @uses $_executable
 	 * @uses $_extension
+	 * @uses $compression
 	 * @uses $connection
 	 * @uses $directory
 	 * @uses $filename
@@ -238,6 +199,10 @@ class DatabaseExport {
 		//This is not done in the constructor, because the "default" connection might not exist
 		if(empty($this->connection))
 			$this->connection('default');
+		
+		//Sets default compression type
+		if(empty($this->compression))
+			$this->compression('none');
 				
 		//Sets the default filename where to export the database
 		//This is not done in the constructor, because you can set and alternative output directory
@@ -263,7 +228,7 @@ class DatabaseExport {
 		
 		//Rotates backups
 		if(!empty($this->rotate))
-			BackupManager::rotate($this->rotate, $this->directory);
+			BackupManager::rotate($this->rotate);
 		
 		return $this->filename;
 	}
