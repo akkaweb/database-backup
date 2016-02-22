@@ -25,7 +25,7 @@ namespace DatabaseBackup\Shell;
 use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
 use DatabaseBackup\Utility\BackupManager;
-use DatabaseBackup\Utility\DatabaseExport;
+use DatabaseBackup\Utility\BackupExport;
 
 /**
  * Shell to handle database backups
@@ -33,15 +33,15 @@ use DatabaseBackup\Utility\DatabaseExport;
 class BackupShell extends Shell {	
 	/**
 	 * Exports a database backup
-	 * @uses DatabaseBackup\Utility\DatabaseExport::connection()
-	 * @uses DatabaseBackup\Utility\DatabaseExport::compression()
-	 * @uses DatabaseBackup\Utility\DatabaseExport::export()
-	 * @uses DatabaseBackup\Utility\DatabaseExport::filename()
+	 * @uses DatabaseBackup\Utility\BackupExport::connection()
+	 * @uses DatabaseBackup\Utility\BackupExport::compression()
+	 * @uses DatabaseBackup\Utility\BackupExport::export()
+	 * @uses DatabaseBackup\Utility\BackupExport::filename()
 	 * @uses rotate()
 	 */
 	public function export() {
 		try {
-			$backup = new DatabaseExport();
+			$backup = new BackupExport();
 		
 			//Sets the database connection
 			if($this->param('connection'))

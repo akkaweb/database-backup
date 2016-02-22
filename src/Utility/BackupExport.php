@@ -33,7 +33,7 @@ use DatabaseBackup\Utility\BackupManager;
  * This will create a backup file with the `gzip` compression and a default filename.
  * In addition, only 10 backup files will be kept, the oldest will be deleted.
  * <code>
- * $backup = new DatabaseExport();
+ * $backup = new BackupExport();
  * $backup->compression('gzip');
  * $backup->rotate(10);
  * $backup->export();
@@ -42,12 +42,12 @@ use DatabaseBackup\Utility\BackupManager;
  * This will create the backup file `mybackup.sql.bz2`.
  * It will use the `bzip2` compression (is automatically detected by the filename).
  * <code>
- * $backup = new DatabaseExport();
+ * $backup = new BackupExport();
  * $backup->filename('mybackup.sql.bz2');
  * $backup->export();
  * </code>
  */
-class DatabaseExport {
+class BackupExport {
 	/**
 	 * Executable command.
 	 * This property is only for internal use of the class. You don't need to set it manually.
