@@ -122,7 +122,7 @@ Cake\Console\Shell
 		<b>Namespace:</b> <a href="namespace-DatabaseBackup.html">DatabaseBackup</a>\<a href="namespace-DatabaseBackup.Shell.html">Shell</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-DatabaseBackup.Shell.BackupShell.html#30-216" title="Go to source code">Shell/BackupShell.php</a>
+			<b>Located at</b> <a href="source-class-DatabaseBackup.Shell.BackupShell.html#30-170" title="Go to source code">Shell/BackupShell.php</a>
 		<br>
 	</div>
 
@@ -130,40 +130,6 @@ Cake\Console\Shell
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="initialize" id="_initialize">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_initialize">#</a>
-		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#34-43" title="Go to source code">initialize</a>( )</code>
-
-		<div class="description short">
-			<p>Initializes the Shell acts as constructor for subclasses allows configuration of tasks prior to shell execution</p>
-		</div>
-
-		<div class="description detailed hidden">
-			<p>Initializes the Shell acts as constructor for subclasses allows configuration of tasks prior to shell execution</p>
-
-
-
-
-
-				<h4>Uses</h4>
-				<div class="list">
-						Cake\Console\Shell::initialize()<br>
-				</div>
-
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="export" id="_export">
 
 		<td class="attributes"><code>
@@ -176,7 +142,7 @@ Cake\Console\Shell
 
 		<td class="name"><div>
 		<a class="anchor" href="#_export">#</a>
-		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#45-84" title="Go to source code">export</a>( )</code>
+		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#34-68" title="Go to source code">export</a>( )</code>
 
 		<div class="description short">
 			<p>Exports a database backup</p>
@@ -191,11 +157,10 @@ Cake\Console\Shell
 
 				<h4>Uses</h4>
 				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#$connection">DatabaseBackup\Utility\DatabaseExport::<var>$connection</var></a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#$compression">DatabaseBackup\Utility\DatabaseExport::<var>$compression</var></a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#$directory">DatabaseBackup\Utility\DatabaseExport::<var>$directory</var></a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#_export">DatabaseBackup\Utility\DatabaseExport::export()</a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#$filename">DatabaseBackup\Utility\DatabaseExport::<var>$filename</var></a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$connection">DatabaseBackup\Utility\BackupExport::<var>$connection</var></a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$compression">DatabaseBackup\Utility\BackupExport::<var>$compression</var></a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#_export">DatabaseBackup\Utility\BackupExport::export()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
 						<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_rotate">DatabaseBackup\Shell\BackupShell::rotate()</a></code><br>
 				</div>
 
@@ -215,7 +180,7 @@ Cake\Console\Shell
 
 		<td class="name"><div>
 		<a class="anchor" href="#_index">#</a>
-		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#86-119" title="Go to source code">index</a>( )</code>
+		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#70-97" title="Go to source code">index</a>( )</code>
 
 		<div class="description short">
 			<p>Lists database backups</p>
@@ -249,7 +214,7 @@ Cake\Console\Shell
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rotate">#</a>
-		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#121-147" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#99-121" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span> )</code>
 
 		<div class="description short">
 			<p>Rotates backups.</p>
@@ -269,6 +234,10 @@ Cake\Console\Shell
 
 
 
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
+				</div>
 				<h4>Used by</h4>
 				<div class="list">
 						<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_export">DatabaseBackup\Shell\BackupShell::export()</a></code><br>
@@ -290,7 +259,7 @@ Cake\Console\Shell
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getOptionParser">#</a>
-		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#149-215" title="Go to source code">getOptionParser</a>( )</code>
+		<code><a href="source-class-DatabaseBackup.Shell.BackupShell.html#123-169" title="Go to source code">getOptionParser</a>( )</code>
 
 		<div class="description short">
 			<p>Gets the option parser instance and configures it.</p>

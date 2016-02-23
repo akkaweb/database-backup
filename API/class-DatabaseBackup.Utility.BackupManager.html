@@ -44,8 +44,8 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-DatabaseBackup.Utility.BackupExport.html">BackupExport</a></li>
 				<li class="active"><a href="class-DatabaseBackup.Utility.BackupManager.html">BackupManager</a></li>
-				<li><a href="class-DatabaseBackup.Utility.DatabaseExport.html">DatabaseExport</a></li>
 			</ul>
 
 
@@ -110,7 +110,7 @@
 		<b>Namespace:</b> <a href="namespace-DatabaseBackup.html">DatabaseBackup</a>\<a href="namespace-DatabaseBackup.Utility.html">Utility</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.BackupManager.html#28-131" title="Go to source code">Utility/BackupManager.php</a>
+			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.BackupManager.html#29-140" title="Go to source code">Utility/BackupManager.php</a>
 		<br>
 	</div>
 
@@ -123,14 +123,14 @@
 		<td class="attributes"><code>
 			 public static
 
-			boolean
+			string
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#32-49" title="Go to source code">delete</a>( <span>string <var>$filename</var></span>, <span>string <var>$dir</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#33-50" title="Go to source code">delete</a>( <span>string <var>$filename</var></span> )</code>
 
 		<div class="description short">
 			<p>Deletes a backup file</p>
@@ -144,13 +144,11 @@
 				<div class="list"><dl>
 					<dt><var>$filename</var></dt>
 					<dd>Filename</dd>
-					<dt><var>$dir</var></dt>
-					<dd>Alternative directory you want to use</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					boolean
+					string<br>File path
 				</div>
 
 				<h4>Throws</h4>
@@ -158,6 +156,14 @@
 					Cake\Network\Exception\InternalErrorException
 				</div>
 
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_path">DatabaseBackup\Utility\BackupManager::path()</a></code><br>
+				</div>
+				<h4>Used by</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
+				</div>
 
 
 		</div>
@@ -175,7 +181,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_index">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#51-93" title="Go to source code">index</a>( <span>string <var>$dir</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#52-92" title="Go to source code">index</a>( )</code>
 
 		<div class="description short">
 			<p>Gets a list of database backups</p>
@@ -185,15 +191,10 @@
 			<p>Gets a list of database backups</p>
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$dir</var></dt>
-					<dd>Alternative directory you want to use</dd>
-				</dl></div>
 
 				<h4>Returns</h4>
 				<div class="list">
-					array
+					array<br>Objects of backups
 				</div>
 
 				<h4>Throws</h4>
@@ -201,9 +202,61 @@
 					Cake\Network\Exception\InternalErrorException
 				</div>
 
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_path">DatabaseBackup\Utility\BackupManager::path()</a></code><br>
+				</div>
 				<h4>Used by</h4>
 				<div class="list">
 						<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_index">DatabaseBackup\Shell\BackupShell::index()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="path" id="_path">
+
+		<td class="attributes"><code>
+			 public static
+
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_path">#</a>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#94-103" title="Go to source code">path</a>( <span>string <var>$filename</var> = <span class="php-keyword1">NULL</span></span> )</code>
+
+		<div class="description short">
+			<p>Returns the path for a backup file.</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Returns the path for a backup file.</p>
+
+<p>If the filename is <code>NULL</code>, returns the backup directory path.</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$filename</var></dt>
+					<dd>Backup filename</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					string<br>File path
+				</div>
+
+
+				<h4>Used by</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_delete">DatabaseBackup\Utility\BackupManager::delete()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_index">DatabaseBackup\Utility\BackupManager::index()</a></code><br>
 				</div>
 
 
@@ -222,7 +275,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rotate">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#95-130" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span>, <span>string <var>$dir</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#105-139" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span> )</code>
 
 		<div class="description short">
 			<p>Rotates backups.</p>
@@ -238,8 +291,6 @@
 				<div class="list"><dl>
 					<dt><var>$keep</var></dt>
 					<dd>Number of files that you want to keep</dd>
-					<dt><var>$dir</var></dt>
-					<dd>Alternative directory you want to use</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -252,9 +303,15 @@
 					Cake\Network\Exception\InternalErrorException
 				</div>
 
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_delete">DatabaseBackup\Utility\BackupManager::delete()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_index">DatabaseBackup\Utility\BackupManager::index()</a></code><br>
+				</div>
 				<h4>Used by</h4>
 				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.DatabaseExport.html#_export">DatabaseBackup\Utility\DatabaseExport::export()</a></code><br>
+						<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_rotate">DatabaseBackup\Shell\BackupShell::rotate()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#_export">DatabaseBackup\Utility\BackupExport::export()</a></code><br>
 				</div>
 
 
