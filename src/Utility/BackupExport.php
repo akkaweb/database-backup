@@ -161,6 +161,18 @@ class BackupExport {
 	 * @throws InternalErrorException
 	 */
 	public static function filename($filename) {
+		$filename = str_replace([
+			'{$DATABASE}',
+			'{$DATETIME}',
+			'{$HOSTNAME}',
+			'{$TIMESTAMP}',
+		], [
+			self::$connection['database'],
+			date('YmdHis'),
+			self::$connection['host'],
+			time(),
+		], $filename);
+		
 		$filename = BackupManager::path($filename);
 		
 		if(!is_writable(dirname($filename)))
@@ -220,8 +232,6 @@ class BackupExport {
 		
 		//Deletes the temporary file
 		unlink($mysqldump);
-		
-		debug(self::$filename); exit;
 		
 		if(!is_readable(self::$filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` has not been created', self::$filename));
