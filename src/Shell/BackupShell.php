@@ -28,7 +28,9 @@ use DatabaseBackup\Utility\BackupManager;
 use DatabaseBackup\Utility\BackupExport;
 
 /**
- * Shell to handle database backups
+ * Shell to handle database backups.
+ * 
+ * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
 class BackupShell extends Shell {	
 	/**

@@ -27,7 +27,9 @@ use Cake\Filesystem\Folder;
 use Cake\Network\Exception\InternalErrorException;
 
 /**
- * Utility to handle database backups
+ * Utility to manage database backups.
+ * 
+ * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
 class BackupManager {
 	/**
