@@ -95,22 +95,7 @@
 	<div class="description">
 	<p>Utility to export the database.</p>
 
-<p>Examples.</p>
-
-<p>This will create a backup file with the <code>gzip</code> compression and a default filename.
-In addition, only 10 backup files will be kept, the oldest will be deleted.</p>
-
-<pre><span class="php-var">$backup</span> = <span class="php-keyword1">new</span> BackupExport();
-<span class="php-var">$backup</span>-&gt;compression(<span class="php-quote">'gzip'</span>);
-<span class="php-var">$backup</span>-&gt;rotate(<span class="php-num">10</span>);
-<span class="php-var">$backup</span>-&gt;export();</pre>
-
-<p>This will create the backup file <code>mybackup.sql.bz2</code>.
-It will use the <code>bzip2</code> compression (is automatically detected by the filename).</p>
-
-<pre><span class="php-var">$backup</span> = <span class="php-keyword1">new</span> BackupExport();
-<span class="php-var">$backup</span>-&gt;filename(<span class="php-quote">'mybackup.sql.bz2'</span>);
-<span class="php-var">$backup</span>-&gt;export();</pre>
+<p>Please, refer to the <code>README</code> file to know how to use the utility and to see examples.</p>
 	</div>
 
 
@@ -127,7 +112,7 @@ It will use the <code>bzip2</code> compression (is automatically detected by the
 		<b>Namespace:</b> <a href="namespace-DatabaseBackup.html">DatabaseBackup</a>\<a href="namespace-DatabaseBackup.Utility.html">Utility</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.BackupExport.html#28-245" title="Go to source code">Utility/BackupExport.php</a>
+			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.BackupExport.html#28-251" title="Go to source code">Utility/BackupExport.php</a>
 		<br>
 	</div>
 
@@ -135,10 +120,49 @@ It will use the <code>bzip2</code> compression (is automatically detected by the
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="compression" id="_compression">
+	<tr data-order="__construct" id="___construct">
 
 		<td class="attributes"><code>
 			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#82-90" title="Go to source code">__construct</a>( <span>string <var>$connection</var> = <span class="php-keyword1">NULL</span></span> )</code>
+
+		<div class="description short">
+			<p>Construct</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Construct</p>
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$connection</var></dt>
+					<dd>Connection name</dd>
+				</dl></div>
+
+
+
+				<h4>Uses</h4>
+				<div class="list">
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$connection">DatabaseBackup\Utility\BackupExport::<var>$connection</var></a></code><br>
+				</div>
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="compression" id="_compression">
+
+		<td class="attributes"><code>
+			 public static
 
 			string
 			
@@ -147,7 +171,7 @@ It will use the <code>bzip2</code> compression (is automatically detected by the
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compression">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#99-133" title="Go to source code">compression</a>( <span>string <var>$compression</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#92-126" title="Go to source code">compression</a>( <span>string <var>$compression</var></span> )</code>
 
 		<div class="description short">
 			<p>Sets the compression type.</p>
@@ -189,7 +213,7 @@ It will use the <code>bzip2</code> compression (is automatically detected by the
 	<tr data-order="connection" id="_connection">
 
 		<td class="attributes"><code>
-			 public 
+			 public static
 
 			array
 			
@@ -198,7 +222,7 @@ It will use the <code>bzip2</code> compression (is automatically detected by the
 
 		<td class="name"><div>
 		<a class="anchor" href="#_connection">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#135-150" title="Go to source code">connection</a>( <span>string <var>$connection</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#128-143" title="Go to source code">connection</a>( <span>string <var>$connection</var></span> )</code>
 
 		<div class="description short">
 			<p>Sets the database connection to use and returns the connection parameters.
@@ -238,7 +262,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 	<tr data-order="filename" id="_filename">
 
 		<td class="attributes"><code>
-			 public 
+			 public static
 
 			string
 			
@@ -247,7 +271,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_filename">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#152-179" title="Go to source code">filename</a>( <span>string <var>$filename</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#145-191" title="Go to source code">filename</a>( <span>string <var>$filename</var></span> )</code>
 
 		<div class="description short">
 			<p>Sets the filename where to export the database.</p>
@@ -279,6 +303,8 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 				<div class="list">
 						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_path">DatabaseBackup\Utility\BackupManager::path()</a></code><br>
 						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$compression">DatabaseBackup\Utility\BackupExport::<var>$compression</var></a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$connection">DatabaseBackup\Utility\BackupExport::<var>$connection</var></a></code><br>
+						<br>
 						<br>
 				</div>
 
@@ -289,7 +315,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 	<tr data-order="export" id="_export">
 
 		<td class="attributes"><code>
-			 public 
+			 public static
 
 			string
 			
@@ -298,7 +324,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_export">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#181-234" title="Go to source code">export</a>( )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#193-240" title="Go to source code">export</a>( )</code>
 
 		<div class="description short">
 			<p>Exports the database</p>
@@ -323,7 +349,6 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 				<div class="list">
 						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
 						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$compression">DatabaseBackup\Utility\BackupExport::<var>$compression</var></a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$connection">DatabaseBackup\Utility\BackupExport::<var>$connection</var></a></code><br>
 						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
 						<br>
 						<br>
@@ -345,7 +370,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 	<tr data-order="rotate" id="_rotate">
 
 		<td class="attributes"><code>
-			 public 
+			 public static
 
 			integer
 			
@@ -354,7 +379,7 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rotate">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#236-244" title="Go to source code">rotate</a>( <span>integer <var>$rotate</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.BackupExport.html#242-250" title="Go to source code">rotate</a>( <span>integer <var>$rotate</var></span> )</code>
 
 		<div class="description short">
 			<p>Sets the number of backups you want to keep. So, it will delete all backups that are older</p>
@@ -402,12 +427,12 @@ The connection must be defined in <code>APP/config/app.php</code>.</p>
 	<caption>Properties summary</caption>
 	<tr data-order="_executable" id="$_executable">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#51-56" title="Go to source code"><var>$_executable</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#34-39" title="Go to source code"><var>$_executable</var></a>
 
 			<div class="description short">
 				<p>Executable command.
@@ -434,12 +459,12 @@ This property is only for internal use of the class. You don't need to set it ma
 	</tr>
 	<tr data-order="_extension" id="$_extension">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#58-63" title="Go to source code"><var>$_extension</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#41-46" title="Go to source code"><var>$_extension</var></a>
 
 			<div class="description short">
 				<p>Filename extension.
@@ -466,12 +491,12 @@ This property is only for internal use of the class. You don't need to set it ma
 	</tr>
 	<tr data-order="compression" id="$compression">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#65-73" title="Go to source code"><var>$compression</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#48-56" title="Go to source code"><var>$compression</var></a>
 
 			<div class="description short">
 				<p>Compression type.
@@ -508,12 +533,12 @@ With the <code>filename()</code> method, the compression type will be automatica
 	</tr>
 	<tr data-order="connection" id="$connection">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			array
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#75-81" title="Go to source code"><var>$connection</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#58-64" title="Go to source code"><var>$connection</var></a>
 
 			<div class="description short">
 				<p>Database connection.
@@ -531,7 +556,9 @@ Use the <code>connection()</code> method to set the database connection.</p>
 					<h4>Used by</h4>
 					<div class="list">
 							<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_export">DatabaseBackup\Shell\BackupShell::export()</a></code><br>
-							<code><a href="class-DatabaseBackup.Utility.BackupExport.html#_export">DatabaseBackup\Utility\BackupExport::export()</a></code><br>
+							<code><a href="class-DatabaseBackup.Utility.BackupExport.html#___construct">DatabaseBackup\Utility\BackupExport::__construct()</a></code><br>
+							<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
+							<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
 							<code><a href="class-DatabaseBackup.Utility.BackupExport.html#_export">DatabaseBackup\Utility\BackupExport::export()</a></code><br>
 					</div>
 			</div>
@@ -545,12 +572,12 @@ Use the <code>connection()</code> method to set the database connection.</p>
 	</tr>
 	<tr data-order="filename" id="$filename">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			string
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#83-89" title="Go to source code"><var>$filename</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#66-72" title="Go to source code"><var>$filename</var></a>
 
 			<div class="description short">
 				<p>Filename where to export the database.
@@ -583,12 +610,12 @@ Use the <code>filename()</code> method to set the filename where to export the d
 	</tr>
 	<tr data-order="rotate" id="$rotate">
 		<td class="attributes"><code>
-			protected  
+			protected static 
 			integer
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#91-97" title="Go to source code"><var>$rotate</var></a>
+				<a href="source-class-DatabaseBackup.Utility.BackupExport.html#74-80" title="Go to source code"><var>$rotate</var></a>
 
 			<div class="description short">
 				<p>Rotate. This is the number of backups you want to keep. So, it will delete all backups that are older.
