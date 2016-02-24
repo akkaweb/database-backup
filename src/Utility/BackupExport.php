@@ -182,7 +182,7 @@ class BackupExport {
 			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` already exists', $filename));
 
 		//Checks if the file has an extension
-		if(!preg_match('/\.(.+)$/', $filename, $matches))
+		if(!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches))
 			throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
 
 		self::compression(get_compression($matches[1]));
