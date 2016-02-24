@@ -28,24 +28,7 @@ use DatabaseBackup\Utility\BackupManager;
 /**
  * Utility to export the database.
  * 
- * Examples.
- * 
- * This will create a backup file with the `gzip` compression and a default filename.
- * In addition, only 10 backup files will be kept, the oldest will be deleted.
- * <code>
- * $backup = new BackupExport();
- * $backup->compression('gzip');
- * $backup->rotate(10);
- * $backup->export();
- * </code>
- * 
- * This will create the backup file `mybackup.sql.bz2`.
- * It will use the `bzip2` compression (is automatically detected by the filename).
- * <code>
- * $backup = new BackupExport();
- * $backup->filename('mybackup.sql.bz2');
- * $backup->export();
- * </code>
+ * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
 class BackupExport {
 	/**
