@@ -97,6 +97,16 @@ class BackupExport {
 	protected static $rotate;
 	
 	/**
+	 * Construct
+	 * @param string $connection Connection name
+	 * @uses connection()
+	 */
+	public function __construct($connection = NULL) {
+		if(!empty($connection))
+			self::connection($connection);
+	}
+
+	/**
 	 * Sets the compression type.
 	 * 
 	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
@@ -157,10 +167,16 @@ class BackupExport {
 	 * @return string Filename path
 	 * @uses DatabaseBackup\Utility\BackupManager::path()
 	 * @uses compression()
+	 * @uses connection()
+	 * @uses $connection
 	 * @uses $filename
 	 * @throws InternalErrorException
 	 */
 	public static function filename($filename) {
+		//Sets the default database connection
+		if(empty(self::$connection))
+			self::connection('default');
+		
 		//Replaces patterns
 		$filename = str_replace([
 			'{$DATABASE}',
@@ -196,7 +212,6 @@ class BackupExport {
 	 * @return string Filename path
 	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
 	 * @uses compression()
-	 * @uses connection()
 	 * @uses filename()
 	 * @uses $_executable
 	 * @uses $_extension
@@ -207,12 +222,7 @@ class BackupExport {
 	 * @uses $rotate
 	 * @throws InternalErrorException
 	 */
-	public static function export() {
-		//Sets the default database connection
-		//This is not done in the constructor, because the "default" connection might not exist
-		if(empty(self::$connection))
-			self::connection('default');
-		
+	public static function export() {		
 		//Sets default compression type
 		if(empty(self::$compression))
 			self::compression('none');
@@ -220,7 +230,7 @@ class BackupExport {
 		//Sets the default filename where to export the database
 		//This is not done in the constructor, because you can set and alternative output directory
 		if(empty(self::$filename))		
-			self::filename(sprintf('backup_%s_%s.%s', self::$connection['database'], date('YmdHis'), self::$_extension));
+			self::filename(sprintf('backup_{$DATABASE}_{$DATETIME}.%s', self::$_extension));
 		
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
