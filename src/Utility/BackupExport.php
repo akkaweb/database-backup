@@ -161,6 +161,7 @@ class BackupExport {
 	 * @throws InternalErrorException
 	 */
 	public static function filename($filename) {
+		//Replaces patterns
 		$filename = str_replace([
 			'{$DATABASE}',
 			'{$DATETIME}',
