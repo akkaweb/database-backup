@@ -38,6 +38,8 @@ The utility provides some methods:
 
 Finally, the `export()` method exports the database.
 
+Please, refer to the [wiki](https://github.com/mirko-pagliai/database-backup/wiki/Examples) to see examples.
+
 ### Create and manage backups with shell
 *DatabaseBackup*  provides the `BackupShell`, which allows you to perform various operations from shell.  
 Simple, to see all the available commands:
