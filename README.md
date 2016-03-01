@@ -1,5 +1,5 @@
 # DatabaseBackup
-*DatabaseBackup* is a CakePHP plugin to handle backups.
+*DatabaseBackup* is a CakePHP plugin to create and handle backups.
 
 ## Installation
 You can install the plugin via composer:
