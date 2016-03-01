@@ -101,7 +101,7 @@ class BackupManager {
 	 * @return string File path
 	 */
 	public static function path($filename = NULL) {
-		return BACKUP.DS.$filename;
+		return BACKUPS.DS.$filename;
 	}
 	
 	/**

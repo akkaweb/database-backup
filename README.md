@@ -15,9 +15,9 @@ So you have to create the directory and make it writable:
 
     $ mkdir backup && chmod 775 backup
 
-You can change this directory by defining the constant until the plugin is loaded. For example:
+You can change this directory by defining the `BACKUPS` constant until the plugin is loaded. For example:
 
-    define('BACKUP', 'alternative'.DS.'directory'.DS.'for'.DS.'backups);
+    define('BACKUPS', 'alternative'.DS.'directory'.DS.'for'.DS.'backups);
     Plugin::load('DatabaseBackup', ['bootstrap' => TRUE]);
 
 ## Usage
