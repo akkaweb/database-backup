@@ -26,6 +26,7 @@ use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
 use DatabaseBackup\Utility\Backup;
 use DatabaseBackup\Utility\BackupExport;
+use DatabaseBackup\Utility\BackupImport;
 
 /**
  * Shell to handle database backups.
@@ -55,10 +56,10 @@ class BackupShell extends Shell {
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
 			
-			//Creates the backup file
+			//Exports the backup file
 			$file = $backup->export();
 			
-			$this->success(__d('database_backup', 'The file {0} has been created', $file));
+			$this->success(__d('database_backup', 'The backup file {0} has been exported', $file));
 			
 			//Rotates backup files.
 			if($this->param('rotate'))
@@ -97,6 +98,32 @@ class BackupShell extends Shell {
 			$this->abort($e->getMessage());
 		}
 	}
+    
+    /**
+	 * Imports a database backup.
+     * 
+     * The filename can be relative to the APP root.
+     * @param string $filename
+	 * @uses DatabaseBackup\Utility\BackupImport::filename()
+	 * @uses DatabaseBackup\Utility\BackupImport::import()
+     */
+    public function import($filename) {
+        if(!\Cake\Filesystem\Folder::isAbsolute($filename))
+            $filename = ROOT.DS.$filename;
+        
+		try {
+			$backup = new BackupImport();
+            $backup->filename($filename);
+            
+			//Imports the backup file
+			$file = $backup->import();
+            
+			$this->success(__d('database_backup', 'The backup file {0} has been imported', $file));
+        }
+		catch(InternalErrorException $e) {
+			$this->abort($e->getMessage());
+		}
+    }
     
     /**
      * Main command. Alias for `index()`
@@ -168,6 +195,15 @@ class BackupShell extends Shell {
 			'index' => [
 				'help' => __d('database_backup', 'Lists database backups')
 			],
+            'import' => [
+				'help' => __d('database_backup', 'Imports a database backup'),
+                'parser' => ['arguments' => [
+					'filename' => [
+						'help' => __d('database_backup', 'Filename to import'),
+						'required' => TRUE
+					]
+				]]	
+            ],
 			'rotate' => [
 				'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
 						. 'So, it will delete all backups that are older'),
@@ -177,7 +213,7 @@ class BackupShell extends Shell {
 						'required' => TRUE
 					]
 				]]				
-			]
+			],
 		]);
 	}
 }

@@ -2,6 +2,7 @@
 ## 1.1 branch
 ### 1.1.0
 * added the `BackupImport` class;
+* added the `import` shell command;
 * by default the plugin uses the `APP/backups` directory to save the backups files.
 
 ## 1.0 branch
