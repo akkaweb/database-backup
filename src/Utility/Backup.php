@@ -43,7 +43,7 @@ class Backup {
 		$path = self::path($filename);
 		
 		if(!is_writable($path))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', $path));
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', $path));
 		
 		if(!(new File($path))->delete())
 			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $path));
@@ -59,7 +59,7 @@ class Backup {
 	 */
 	public static function index() {
 		if(!is_readable(BACKUPS))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not readable', rtr(BACKUPS)));
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', rtr(BACKUPS)));
 		
 		//Gets all files
 		$files = array_values((new Folder(BACKUPS))->read()[1]);
