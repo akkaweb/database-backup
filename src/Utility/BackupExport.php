@@ -212,14 +212,14 @@ class BackupExport {
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
 		//So it creates a temporary file to store the configuration options
-		$mysqldump = tempnam(sys_get_temp_dir(), 'mysqldump');
-		file_put_contents($mysqldump, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", self::$connection['username'], self::$connection['password'], self::$connection['host']));
+		$auth = tempnam(sys_get_temp_dir(), 'auth');
+		file_put_contents($auth, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", self::$connection['username'], self::$connection['password'], self::$connection['host']));
 		
 		//Executes
-		exec(sprintf(self::$_executable, $mysqldump, self::$connection['database'], self::$filename));
+		exec(sprintf(self::$_executable, $auth, self::$connection['database'], self::$filename));
 		
 		//Deletes the temporary file
-		unlink($mysqldump);
+		unlink($auth);
 		
 		if(!is_readable(self::$filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', self::$filename));
