@@ -88,7 +88,7 @@ class BackupShell extends Shell {
 
 				$this->helper('table')->output(array_merge([[
 					__d('database_backup', 'Filename'),
-					__d('database_backup', 'Compression type'),
+					__d('database_backup', 'Compression'),
 					__d('database_backup', 'Datetime')
 				]], $files));
 			}
