@@ -1,5 +1,5 @@
 # DatabaseBackup
-*DatabaseBackup* is a CakePHP plugin to create and handle backups.
+*DatabaseBackup* is a CakePHP plugin to export and manage backups.
 
 ## Installation
 You can install the plugin via composer:
@@ -27,8 +27,9 @@ You can change this directory by defining the `BACKUPS` constant until the plugi
 
 Also it provides the `BackupShell`, which allows you to perform various operations from shell.
 
-### Create backups
-You can create backups with the `BackupExport` utility. The class constructor accepts the connection name that you want to use.
+### Export backups
+You can export backups with the `BackupExport` utility.  
+The class constructor accepts the connection name that you want to use.
 
 The utility provides some methods:
 * `compression()` sets the compression type. The supported values are `gzip`, `bzip2` and `none`. By default, no compression will be used;
@@ -40,7 +41,7 @@ Finally, the `export()` method exports the database.
 
 Please, refer to the [wiki](https://github.com/mirko-pagliai/database-backup/wiki/Examples) to see examples.
 
-### Create and manage backups with shell
+### Manage backups with shell
 *DatabaseBackup*  provides the `BackupShell`, which allows you to perform various operations from shell.  
 Simple, to see all the available commands:
 
@@ -54,9 +55,9 @@ Example:
 
     $ bin/cake backup export -c gzip -r 10
 
-This will create a backup file with the `gzip` compression and a default filename. In addition, only 10 backup files will be kept, the oldest will be deleted.
+This will export a backup file with the `gzip` compression and a default filename. In addition, only 10 backup files will be kept, the oldest will be deleted.
 
-### Create backups as cron jobs
+### Export backups as cron jobs
 You can schedule backups by running the plugin shell as cron job. Please refer to the [CakePHP cookbook](http://book.cakephp.org/3.0/en/console-and-shells/cron-jobs.html).
 
 Example.  
