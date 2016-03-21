@@ -30,7 +30,7 @@ use DatabaseBackup\Utility\Backup;
  * 
  * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
-class BackupExport {	
+class BackupExport {
 	/**
 	 * Compression type. 
 	 * Use the `compression()` method to set the compression type.
@@ -51,14 +51,14 @@ class BackupExport {
     
 	/**
 	 * Executable command.
-	 * This property is only for internal use of the class. You don't need to set it manually.
+	 * This property is only for internal use of the class.
 	 * @var string 
 	 */
 	protected $executable;
 	
 	/**
 	 * Filename extension.
-	 * This property is only for internal use of the class. You don't need to set it manually.
+	 * This property is only for internal use of the class.
 	 * @var string
 	 */
 	protected $extension;
@@ -88,6 +88,14 @@ class BackupExport {
 		$this->connection(empty($connection) ? 'default' : $connection);
 	}
     
+    /**
+     * Sets the executable.
+     * This method is only for internal use of the class.
+     * @return string
+     * @throws InternalErrorException
+     * @uses $compression
+     * @uses executable
+     */
     protected function _executable() {
         if(empty($this->compression))
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
@@ -101,6 +109,14 @@ class BackupExport {
         return $this->executable = $executables[$this->compression];
     }
     
+    /**
+     * Sets the extension.
+     * This method is only for internal use of the class.
+     * @return string
+     * @throws InternalErrorException
+     * @uses $compression
+     * @uses $extension
+     */
     protected function _extension() {
         if(empty($this->compression))
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
@@ -211,7 +227,7 @@ class BackupExport {
 		if(empty($this->compression))
 			$this->compression('none');
         
-        //Sets the executable and the file extension
+        //Sets the executable and the extension
         $this->_executable();
         $this->_extension();
 				

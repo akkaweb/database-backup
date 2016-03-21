@@ -26,6 +26,13 @@ use Cake\Network\Exception\InternalErrorException;
 
 class BackupImport {
 	/**
+	 * Compression type. 
+	 * This property is only for internal use of the class.
+	 * @var string
+	 */
+	protected $compression;
+    
+	/**
 	 * Database connection.
 	 * Use the `connection()` method to set the database connection.
 	 * @var array 
@@ -35,35 +42,31 @@ class BackupImport {
     
 	/**
 	 * Executable command.
-	 * This property is only for internal use of the class. You don't need to set it manually.
+	 * This property is only for internal use of the class.
 	 * @var string 
 	 */
 	protected $executable;
     
-	/**
-	 * Sets the executable type
-	 * @param string $compression Compression type
-     * @return boolean
-	 * @uses $executable
-	 * @throws InternalErrorException
-	 */
-	protected function _executable($compression) {
-		switch($compression) {
-			case 'gzip':
-                $this->executable = 'gzip -dc %s | mysql --defaults-extra-file=%s %s';
-				break;
-			case 'bzip2':
-                $this->executable = 'bzip2 -dc %s | mysql --defaults-extra-file=%s %s';
-				break;
-			case 'none':
-                $this->executable = 'cat %s | mysql --defaults-extra-file=%s %s';
-				break;
-			default:
-				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
-		}
-		
-		return TRUE;
-	}
+    /**
+     * Sets the executable.
+     * This method is only for internal use of the class.
+     * @return string
+     * @throws InternalErrorException
+     * @uses $compression
+     * @uses executable
+     */
+    protected function _executable() {
+        if(empty($this->compression))
+			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+        
+        $executables = [
+            'bzip2' => 'bzip2 -dc %s | mysql --defaults-extra-file=%s %s',
+            'gzip' => 'gzip -dc %s | mysql --defaults-extra-file=%s %s',
+            'none' => 'cat %s | mysql --defaults-extra-file=%s %s',
+        ];
+        
+        return $this->executable = $executables[$this->compression];
+    }
     
 	/**
 	 * Construct
@@ -72,6 +75,21 @@ class BackupImport {
 	 */
 	public function __construct($connection = NULL) {
 		$this->connection(empty($connection) ? 'default' : $connection);
+	}
+
+	/**
+	 * Sets the compression type.
+     * This method is only for internal use of the class.
+	 * @param string $compression Compression type
+	 * @return string
+	 * @uses $compression
+	 * @throws InternalErrorException
+	 */
+	protected function compression($compression) {
+        if(!in_array($compression, ['none', 'gzip', 'bzip2']))
+			throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
+		
+		return $this->compression = $compression;
 	}
 	
 	/**
@@ -96,7 +114,7 @@ class BackupImport {
 	 * @param string $filename Filename path
      * @return string Filename path
      * @throws InternalErrorException
-     * @uses _executable()
+     * @uses compression()
      * @uses $filename
      */
     public function filename($filename) {
@@ -106,14 +124,15 @@ class BackupImport {
 		//Checks if the file has an extension
 		if(!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches))
 			throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
-                
-		$this->_executable(get_compression($matches[1]));
+        
+		$this->compression(get_compression($matches[1]));
         
 		return $this->filename = $filename;
     }
     
     /**
      * Imports the database
+     * @uses _executable()
      * @uses $connection
      * @uses $executable
      * @uses $filename
@@ -122,6 +141,9 @@ class BackupImport {
     public function import() {
         if(empty($this->filename))
 			throw new InternalErrorException(__d('database_backup', 'The filename is missing'));
+        
+        //Sets the executable
+        $this->_executable();
         
         //For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
