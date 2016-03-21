@@ -30,21 +30,7 @@ use DatabaseBackup\Utility\Backup;
  * 
  * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
-class BackupExport {
-	/**
-	 * Executable command.
-	 * This property is only for internal use of the class. You don't need to set it manually.
-	 * @var string 
-	 */
-	protected static $_executable;
-	
-	/**
-	 * Filename extension.
-	 * This property is only for internal use of the class. You don't need to set it manually.
-	 * @var string
-	 */
-	protected static $_extension;
-	
+class BackupExport {	
 	/**
 	 * Compression type. 
 	 * Use the `compression()` method to set the compression type.
@@ -53,7 +39,7 @@ class BackupExport {
 	 * @see compression()
 	 * @see filename()
 	 */
-	protected static $compression;
+	protected $compression;
 	
 	/**
 	 * Database connection.
@@ -61,7 +47,21 @@ class BackupExport {
 	 * @var array 
 	 * @see connection()
 	 */
-	protected static $connection;
+	protected $connection;
+    
+	/**
+	 * Executable command.
+	 * This property is only for internal use of the class. You don't need to set it manually.
+	 * @var string 
+	 */
+	protected $executable;
+	
+	/**
+	 * Filename extension.
+	 * This property is only for internal use of the class. You don't need to set it manually.
+	 * @var string
+	 */
+	protected $extension;
 	
 	/**
 	 * Filename where to export the database.
@@ -69,7 +69,7 @@ class BackupExport {
 	 * @var string
 	 * @see filename()
 	 */
-	protected static $filename;
+	protected $filename;
 	
 	/**
 	 * Rotate. This is the number of backups you want to keep. So, it will delete all backups that are older.
@@ -77,7 +77,7 @@ class BackupExport {
 	 * @var int
 	 * @see rotate()
 	 */
-	protected static $rotate;
+	protected $rotate;
 	
 	/**
 	 * Construct
@@ -85,7 +85,7 @@ class BackupExport {
 	 * @uses connection()
 	 */
 	public function __construct($connection = NULL) {
-		self::connection(empty($connection) ? 'default' : $connection);
+		$this->connection(empty($connection) ? 'default' : $connection);
 	}
 
 	/**
@@ -94,34 +94,34 @@ class BackupExport {
 	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
 	 * @return string Compression type
-	 * @uses $_executable
-	 * @uses $_extension
 	 * @uses $compression
+	 * @uses $executable
+	 * @uses $extension
 	 * @throws InternalErrorException
 	 */
-	public static function compression($compression) {
+	public function compression($compression) {
 		switch($compression) {
 			case 'gzip':
-				self::$_executable = 'mysqldump --defaults-file=%s %s | gzip > %s';
-				self::$_extension = 'sql.gz';
-				self::$compression = 'gzip';
+				$this->executable = 'mysqldump --defaults-file=%s %s | gzip > %s';
+				$this->extension = 'sql.gz';
+				$this->compression = 'gzip';
 				break;
 			case 'bzip2':
-				self::$_executable = 'mysqldump --defaults-file=%s %s | bzip2 > %s';
-				self::$_extension = 'sql.bz2';
-				self::$compression = 'bzip2';
+				$this->executable = 'mysqldump --defaults-file=%s %s | bzip2 > %s';
+				$this->extension = 'sql.bz2';
+				$this->compression = 'bzip2';
 				break;
 			case 'none':
-				self::$_executable = 'mysqldump --defaults-file=%s %s > %s';
-				self::$_extension = 'sql';
-				self::$compression = 'none';
+				$this->executable = 'mysqldump --defaults-file=%s %s > %s';
+				$this->extension = 'sql';
+				$this->compression = 'none';
 				break;
 			default:
 				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
 				break;
 		}
 		
-		return self::$compression;
+		return $this->compression;
 	}
 	
 	/**
@@ -132,13 +132,13 @@ class BackupExport {
 	 * @use $connection
 	 * @throws InternalErrorException
 	 */
-	public static function connection($connection) {		
-		self::$connection = \Cake\Datasource\ConnectionManager::config($connection);
+	public function connection($connection) {		
+		$this->connection = \Cake\Datasource\ConnectionManager::config($connection);
 		
-		if(empty(self::$connection))
+		if(empty($this->connection))
 			throw new InternalErrorException(__d('database_backup', 'Invalid connection'));
 		
-		return self::$connection;
+		return $this->connection;
 	}
 	
 	/**
@@ -153,7 +153,7 @@ class BackupExport {
 	 * @uses $filename
 	 * @throws InternalErrorException
 	 */
-	public static function filename($filename) {
+	public function filename($filename) {
 		//Replaces patterns
 		$filename = str_replace([
 			'{$DATABASE}',
@@ -161,9 +161,9 @@ class BackupExport {
 			'{$HOSTNAME}',
 			'{$TIMESTAMP}',
 		], [
-			self::$connection['database'],
+			$this->connection['database'],
 			date('YmdHis'),
-			self::$connection['host'],
+			$this->connection['host'],
 			time(),
 		], $filename);
 		
@@ -179,9 +179,9 @@ class BackupExport {
 		if(!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches))
 			throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
 
-		self::compression(get_compression($matches[1]));
+		$this->compression(get_compression($matches[1]));
 		
-		return self::$filename = $filename;
+		return $this->filename = $filename;
 	}
 
 	/**
@@ -190,47 +190,47 @@ class BackupExport {
 	 * @uses DatabaseBackup\Utility\Backup::rotate()
 	 * @uses compression()
 	 * @uses filename()
-	 * @uses $_executable
-	 * @uses $_extension
 	 * @uses $compression
 	 * @uses $connection
 	 * @uses $directory
+	 * @uses $executable
+	 * @uses $extension
 	 * @uses $filename
 	 * @uses $rotate
 	 * @throws InternalErrorException
 	 */
-	public static function export() {		
+	public function export() {		
 		//Sets default compression type
-		if(empty(self::$compression))
-			self::compression('none');
+		if(empty($this->compression))
+			$this->compression('none');
 				
 		//Sets the default filename where to export the database
 		//This is not done in the constructor, because you can set and alternative output directory
-		if(empty(self::$filename))		
-			self::filename(sprintf('backup_{$DATABASE}_{$DATETIME}.%s', self::$_extension));
+		if(empty($this->filename))		
+			$this->filename(sprintf('backup_{$DATABASE}_{$DATETIME}.%s', $this->extension));
 		
 		//For security reasons, it's recommended to specify the password in a configuration file and 
 		//not in the command (a user can execute a `ps aux | grep mysqldump` and see the password)
 		//So it creates a temporary file to store the configuration options
 		$auth = tempnam(sys_get_temp_dir(), 'auth');
-		file_put_contents($auth, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", self::$connection['username'], self::$connection['password'], self::$connection['host']));
+		file_put_contents($auth, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", $this->connection['username'], $this->connection['password'], $this->connection['host']));
 		
 		//Executes
-		exec(sprintf(self::$_executable, $auth, self::$connection['database'], self::$filename));
+		exec(sprintf($this->executable, $auth, $this->connection['database'], $this->filename));
 		
 		//Deletes the temporary file
 		unlink($auth);
 		
-		if(!is_readable(self::$filename))
-			throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', self::$filename));
+		if(!is_readable($this->filename))
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', $this->filename));
 		
-		@chmod(self::$filename, 0766);
+		@chmod($this->filename, 0766);
 		
 		//Rotates backups
-		if(!empty(self::$rotate))
-			Backup::rotate(self::$rotate);
+		if(!empty($this->rotate))
+			Backup::rotate($this->rotate);
 		
-		return self::$filename;
+		return $this->filename;
 	}
 	
 	/**
@@ -239,7 +239,7 @@ class BackupExport {
 	 * @return int Number of backups you want to keep
 	 * @uses $rotate
 	 */
-	public static function rotate($rotate) {
-		return self::$rotate = $rotate;
+	public function rotate($rotate) {
+		return $this->rotate = $rotate;
 	}
 }
