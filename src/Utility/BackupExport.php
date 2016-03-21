@@ -87,41 +87,47 @@ class BackupExport {
 	public function __construct($connection = NULL) {
 		$this->connection(empty($connection) ? 'default' : $connection);
 	}
+    
+    protected function _executable() {
+        if(empty($this->compression))
+			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+        
+        $executables = [
+            'bzip2' => 'mysqldump --defaults-file=%s %s | bzip2 > %s',
+            'gzip' => 'mysqldump --defaults-file=%s %s | gzip > %s',
+            'none' => 'mysqldump --defaults-file=%s %s > %s',
+        ];
+        
+        return $this->executable = $executables[$this->compression];
+    }
+    
+    protected function _extension() {
+        if(empty($this->compression))
+			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+        
+        $extensions = [
+            'bzip2' => 'sql.bz2',
+            'gzip' => 'sql.gz',
+            'none' => 'sql',
+        ];
+        
+        return $this->extension = $extensions[$this->compression];
+    }
 
 	/**
 	 * Sets the compression type.
 	 * 
 	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
-	 * @return string Compression type
+	 * @return string
 	 * @uses $compression
-	 * @uses $executable
-	 * @uses $extension
 	 * @throws InternalErrorException
 	 */
 	public function compression($compression) {
-		switch($compression) {
-			case 'gzip':
-				$this->executable = 'mysqldump --defaults-file=%s %s | gzip > %s';
-				$this->extension = 'sql.gz';
-				$this->compression = 'gzip';
-				break;
-			case 'bzip2':
-				$this->executable = 'mysqldump --defaults-file=%s %s | bzip2 > %s';
-				$this->extension = 'sql.bz2';
-				$this->compression = 'bzip2';
-				break;
-			case 'none':
-				$this->executable = 'mysqldump --defaults-file=%s %s > %s';
-				$this->extension = 'sql';
-				$this->compression = 'none';
-				break;
-			default:
-				throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
-				break;
-		}
+        if(!in_array($compression, ['none', 'gzip', 'bzip2']))
+			throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
 		
-		return $this->compression;
+		return $this->compression = $compression;
 	}
 	
 	/**
@@ -187,6 +193,8 @@ class BackupExport {
 	 * Exports the database
 	 * @return string Filename path
 	 * @uses DatabaseBackup\Utility\Backup::rotate()
+     * @uses _executable()
+     * @uses _extension()
 	 * @uses compression()
 	 * @uses filename()
 	 * @uses $compression
@@ -202,6 +210,10 @@ class BackupExport {
 		//Sets default compression type
 		if(empty($this->compression))
 			$this->compression('none');
+        
+        //Sets the executable and the file extension
+        $this->_executable();
+        $this->_extension();
 				
 		//Sets the default filename where to export the database
 		//This is not done in the constructor, because you can set and alternative output directory
