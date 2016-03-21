@@ -97,6 +97,14 @@ class BackupShell extends Shell {
 			$this->abort($e->getMessage());
 		}
 	}
+    
+    /**
+     * Main command. Alias for `index()`
+     * @uses index()
+     */
+    public function main() {
+        return $this->index();
+    }
 	
 	/**
 	 * Rotates backups.
