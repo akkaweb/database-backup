@@ -57,7 +57,7 @@ class BackupShell extends Shell {
 			//Exports the backup file
 			$file = $backup->export();
 			
-			$this->success(__d('database_backup', 'The backup file {0} has been exported', $file));
+			$this->success(__d('database_backup', 'The backup {0} has been exported', $file));
 			
 			//Rotates backup files.
 			if($this->param('rotate'))
@@ -115,7 +115,7 @@ class BackupShell extends Shell {
 			//Imports the backup file
 			$file = $backup->import();
             
-			$this->success(__d('database_backup', 'The backup file {0} has been imported', $file));
+			$this->success(__d('database_backup', 'The backup {0} has been imported', $file));
         }
 		catch(InternalErrorException $e) {
 			$this->abort($e->getMessage());
