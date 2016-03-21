@@ -1,5 +1,5 @@
 # DatabaseBackup
-*DatabaseBackup* is a CakePHP plugin to export and manage backups.
+*DatabaseBackup* is a CakePHP plugin to export, import and manage database backups.
 
 ## Installation
 You can install the plugin via composer:
@@ -21,9 +21,10 @@ You can change this directory by defining the `BACKUPS` constant until the plugi
     Plugin::load('DatabaseBackup', ['bootstrap' => TRUE]);
 
 ## Usage
-*DatabaseBackup* provides two utilities:
+*DatabaseBackup* provides three classes:
 * `Backup` allows you to make various operations with database backups;
-* `BackupExport` allows you to export database backups.
+* `BackupExport` allows you to export database backups;
+* `BackupImport` allows you to import database backups.
 
 Also it provides the `BackupShell`, which allows you to perform various operations from shell.
 
@@ -31,13 +32,25 @@ Also it provides the `BackupShell`, which allows you to perform various operatio
 You can export backups with the `BackupExport` utility.  
 The class constructor accepts the connection name that you want to use.
 
-The utility provides some methods:
+The utility provides these public methods:
 * `compression()` sets the compression type. The supported values are `gzip`, `bzip2` and `none`. By default, no compression will be used;
 * `connection()` sets the database connection. The connection must be defined in `APP/config/app.php`. By default, the `default` connection will be used;
 * `filename()` sets the filename where to export the database. Using this method, the compression type will be automatically detected by the filename. This method accepts some patterns (`{$DATABASE}`, `{$DATETIME}`, `{$HOSTNAME}`, `{$TIMESTAMP}`);
 * `rotate()` sets the number of backups you want to keep. So, it will delete all backups that are older.
 
 Finally, the `export()` method exports the database.
+
+Please, refer to the [wiki](https://github.com/mirko-pagliai/database-backup/wiki/Examples) to see examples.
+
+### Import backups
+You can import backups with the `BackupImport` utility.  
+The class constructor accepts the connection name that you want to use.
+
+The utility provides these public methods:
+* `connection()` sets the database connection. The connection must be defined in `APP/config/app.php`. By default, the `default` connection will be used;
+* `filename()` sets the filename to use to import the database.
+
+Finally, the `import()` method imports the database.
 
 Please, refer to the [wiki](https://github.com/mirko-pagliai/database-backup/wiki/Examples) to see examples.
 
@@ -51,11 +64,15 @@ To see all the available options for a command:
 
     $ bin/cake backup export -h
     
-Example:
+Examples:
 
     $ bin/cake backup export -c gzip -r 10
 
 This will export a backup file with the `gzip` compression and a default filename. In addition, only 10 backup files will be kept, the oldest will be deleted.
+
+	$ bin/cake backup import backups/my_backup.sql
+
+This will import the backup file `backups/my_backup.sql`.
 
 ### Export backups as cron jobs
 You can schedule backups by running the plugin shell as cron job. Please refer to the [CakePHP cookbook](http://book.cakephp.org/3.0/en/console-and-shells/cron-jobs.html).
