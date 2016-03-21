@@ -10,10 +10,10 @@ Then, edit `APP/config/bootstrap.php` to load the plugin:
 
     Plugin::load('DatabaseBackup', ['bootstrap' => TRUE]);
     
-By default the plugin uses the `APP/backup` directory to save the backups files.  
+By default the plugin uses the `APP/backups` directory to save the backups files.  
 So you have to create the directory and make it writable:
 
-    $ mkdir backup && chmod 775 backup
+    $ mkdir backups/ && chmod 775 backups/
 
 You can change this directory by defining the `BACKUPS` constant until the plugin is loaded. For example:
 

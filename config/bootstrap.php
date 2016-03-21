@@ -25,7 +25,7 @@ use Cake\Network\Exception\InternalErrorException;
 
 //Sets the default directory
 if(!defined('BACKUPS'))
-	define('BACKUPS', ROOT.DS.'backup');
+	define('BACKUPS', ROOT.DS.'backups');
 
 if(!function_exists('get_compression')) {
 	/**
