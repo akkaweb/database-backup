@@ -170,10 +170,10 @@ class BackupExport {
 		$filename = BackupManager::path($filename);
 		
 		if(!is_writable(dirname($filename)))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', dirname($filename)));
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', dirname($filename)));
 		
 		if(file_exists($filename))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` already exists', $filename));
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} already exists', $filename));
 
 		//Checks if the file has an extension
 		if(!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches))
@@ -222,7 +222,7 @@ class BackupExport {
 		unlink($mysqldump);
 		
 		if(!is_readable(self::$filename))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` has not been created', self::$filename));
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', self::$filename));
 		
 		@chmod(self::$filename, 0766);
 		
