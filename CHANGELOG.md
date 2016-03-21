@@ -1,4 +1,8 @@
 # 1.x branch
+## 1.1 branch
+### 1.1.0
+* added the `BackupImport` class.
+
 ## 1.0 branch
 ### 1.0.3
 * renamed constant for the backup directory.
