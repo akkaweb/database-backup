@@ -118,6 +118,11 @@ class BackupImport {
      * @uses $filename
      */
     public function filename($filename) {
+        if(!\Cake\Filesystem\Folder::isAbsolute($filename))
+            $filename = BACKUPS.DS.$filename;
+        
+        debug($filename);
+        
 		if(!is_readable($filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', $filename));
         
