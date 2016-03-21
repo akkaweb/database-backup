@@ -24,7 +24,7 @@ namespace DatabaseBackup\Shell;
 
 use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
-use DatabaseBackup\Utility\BackupManager;
+use DatabaseBackup\Utility\Backup;
 use DatabaseBackup\Utility\BackupExport;
 
 /**
@@ -71,12 +71,12 @@ class BackupShell extends Shell {
 	
 	/**
 	 * Lists database backups
-	 * @uses DatabaseBackup\Utility\BackupManager::index()
+	 * @uses DatabaseBackup\Utility\Backup::index()
 	 */
 	public function index() {
 		try {
 			//Gets alla files
-			$files = BackupManager::index();
+			$files = Backup::index();
 			
 			$this->out(__d('database_backup', 'Backup files found: {0}', count($files)));
 					
@@ -103,11 +103,14 @@ class BackupShell extends Shell {
 	 * 
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
 	 * @param int $keep Number of files that you want to keep
-	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
+	 * @uses DatabaseBackup\Utility\Backup::rotate()
 	 */
 	public function rotate($keep) {
 		try {
-			if($deleted = BackupManager::rotate($keep)) {
+            //Gets deleted files
+            $deleted = Backup::rotate($keep);
+            
+			if($deleted) {
 				foreach($deleted as $file)
 					$this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
 				

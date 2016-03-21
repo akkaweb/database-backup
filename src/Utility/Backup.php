@@ -31,7 +31,7 @@ use Cake\Network\Exception\InternalErrorException;
  * 
  * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
-class BackupManager {
+class Backup {
 	/**
 	 * Deletes a backup file
 	 * @param string $filename Filename

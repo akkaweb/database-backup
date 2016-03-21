@@ -23,7 +23,7 @@
 namespace DatabaseBackup\Utility;
 
 use Cake\Network\Exception\InternalErrorException;
-use DatabaseBackup\Utility\BackupManager;
+use DatabaseBackup\Utility\Backup;
 
 /**
  * Utility to export the database.
@@ -147,7 +147,7 @@ class BackupExport {
 	 * Using this method, the compression type will be automatically detected by the filename.
 	 * @param string $filename Filename path
 	 * @return string Filename path
-	 * @uses DatabaseBackup\Utility\BackupManager::path()
+	 * @uses DatabaseBackup\Utility\Backup::path()
 	 * @uses compression()
 	 * @uses $connection
 	 * @uses $filename
@@ -167,7 +167,7 @@ class BackupExport {
 			time(),
 		], $filename);
 		
-		$filename = BackupManager::path($filename);
+		$filename = Backup::path($filename);
 		
 		if(!is_writable(dirname($filename)))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', dirname($filename)));
@@ -187,7 +187,7 @@ class BackupExport {
 	/**
 	 * Exports the database
 	 * @return string Filename path
-	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
+	 * @uses DatabaseBackup\Utility\Backup::rotate()
 	 * @uses compression()
 	 * @uses filename()
 	 * @uses $_executable
@@ -228,7 +228,7 @@ class BackupExport {
 		
 		//Rotates backups
 		if(!empty(self::$rotate))
-			BackupManager::rotate(self::$rotate);
+			Backup::rotate(self::$rotate);
 		
 		return self::$filename;
 	}
