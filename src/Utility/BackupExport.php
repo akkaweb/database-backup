@@ -85,8 +85,7 @@ class BackupExport {
 	 * @uses connection()
 	 */
 	public function __construct($connection = NULL) {
-		if(!empty($connection))
-			self::connection($connection);
+		self::connection(empty($connection) ? 'default' : $connection);
 	}
 
 	/**
@@ -150,16 +149,11 @@ class BackupExport {
 	 * @return string Filename path
 	 * @uses DatabaseBackup\Utility\BackupManager::path()
 	 * @uses compression()
-	 * @uses connection()
 	 * @uses $connection
 	 * @uses $filename
 	 * @throws InternalErrorException
 	 */
 	public static function filename($filename) {
-		//Sets the default database connection
-		if(empty(self::$connection))
-			self::connection('default');
-		
 		//Replaces patterns
 		$filename = str_replace([
 			'{$DATABASE}',
