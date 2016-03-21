@@ -147,7 +147,6 @@ class BackupExport {
 	 * Using this method, the compression type will be automatically detected by the filename.
 	 * @param string $filename Filename path
 	 * @return string Filename path
-	 * @uses DatabaseBackup\Utility\Backup::path()
 	 * @uses compression()
 	 * @uses $connection
 	 * @uses $filename
@@ -167,7 +166,7 @@ class BackupExport {
 			time(),
 		], $filename);
 		
-		$filename = Backup::path($filename);
+		$filename = BACKUPS.DS.$filename;
 		
 		if(!is_writable(dirname($filename)))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', dirname($filename)));

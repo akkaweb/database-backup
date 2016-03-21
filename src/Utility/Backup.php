@@ -94,17 +94,6 @@ class Backup {
 	}
 	
 	/**
-	 * Returns the path for a backup file.
-	 * 
-	 * If the filename is `NULL`, returns the backup directory path.
-	 * @param string $filename Backup filename
-	 * @return string File path
-	 */
-	public static function path($filename = NULL) {
-		return BACKUPS.DS.$filename;
-	}
-	
-	/**
 	 * Rotates backups.
 	 * 
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
