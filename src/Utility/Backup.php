@@ -58,11 +58,11 @@ class Backup {
 	 * @uses path()
 	 */
 	public static function index() {
-		if(!is_readable(self::path()))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not readable', self::path()));
+		if(!is_readable(BACKUPS))
+			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not readable', rtr(BACKUPS)));
 		
 		//Gets all files
-		$files = array_values((new Folder(self::path()))->read()[1]);
+		$files = array_values((new Folder(BACKUPS))->read()[1]);
 		
 		//Parses files
 		$files = array_filter(array_map(function($file) {
