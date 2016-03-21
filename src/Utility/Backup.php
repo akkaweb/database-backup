@@ -31,38 +31,36 @@ use Cake\Network\Exception\InternalErrorException;
  * 
  * Please, refer to the `README` file to know how to use the utility and to see examples.
  */
-class BackupManager {
+class Backup {
 	/**
 	 * Deletes a backup file
 	 * @param string $filename Filename
-	 * @return string File path
+	 * @return string
 	 * @throws InternalErrorException
-	 * @uses path()
 	 */
 	public static function delete($filename) {
-		$path = self::path($filename);
+		$filename = BACKUPS.DS.$filename;
 		
-		if(!is_writable($path))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not writeable', $path));
+		if(!is_writable($filename))
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', $filename));
 		
-		if(!(new File($path))->delete())
-			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $path));
+		if(!(new File($filename))->delete())
+			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $filename));
 		
-		return $path;
+		return $filename;
 	}
 	
 	/**
 	 * Gets a list of database backups
 	 * @return array Objects of backups
 	 * @throws InternalErrorException
-	 * @uses path()
 	 */
 	public static function index() {
-		if(!is_readable(self::path()))
-			throw new InternalErrorException(__d('database_backup', 'File or directory `{0}` not readable', self::path()));
+		if(!is_readable(BACKUPS))
+			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', rtr(BACKUPS)));
 		
 		//Gets all files
-		$files = array_values((new Folder(self::path()))->read()[1]);
+		$files = array_values((new Folder(BACKUPS))->read()[1]);
 		
 		//Parses files
 		$files = array_filter(array_map(function($file) {
@@ -75,7 +73,7 @@ class BackupManager {
 			if(!empty($matches[1]))
 				$datetime = preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1]);
 			else
-				$datetime = date('Y-m-d H:i:s', (new File(self::path($file)))->lastChange());
+				$datetime = date('Y-m-d H:i:s', (new File(BACKUPS.DS.$file))->lastChange());
 			
 			return (object) [
 				'filename' => $file,
@@ -91,17 +89,6 @@ class BackupManager {
 		});
 		
 		return empty($files) ? [] : $files;
-	}
-	
-	/**
-	 * Returns the path for a backup file.
-	 * 
-	 * If the filename is `NULL`, returns the backup directory path.
-	 * @param string $filename Backup filename
-	 * @return string File path
-	 */
-	public static function path($filename = NULL) {
-		return BACKUPS.DS.$filename;
 	}
 	
 	/**

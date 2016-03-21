@@ -24,8 +24,7 @@ namespace DatabaseBackup\Shell;
 
 use Cake\Console\Shell;
 use Cake\Network\Exception\InternalErrorException;
-use DatabaseBackup\Utility\BackupManager;
-use DatabaseBackup\Utility\BackupExport;
+use DatabaseBackup\Utility\Backup;
 
 /**
  * Shell to handle database backups.
@@ -43,7 +42,7 @@ class BackupShell extends Shell {
 	 */
 	public function export() {
 		try {
-			$backup = new BackupExport();
+			$backup = new \DatabaseBackup\Utility\BackupExport();
 		
 			//Sets the database connection
 			if($this->param('connection'))
@@ -55,10 +54,10 @@ class BackupShell extends Shell {
 			elseif($this->param('compression'))
 				$backup->compression($this->param('compression'));
 			
-			//Creates the backup file
+			//Exports the backup file
 			$file = $backup->export();
 			
-			$this->success(__d('database_backup', 'The file {0} has been created', $file));
+			$this->success(__d('database_backup', 'The backup {0} has been exported', $file));
 			
 			//Rotates backup files.
 			if($this->param('rotate'))
@@ -71,12 +70,12 @@ class BackupShell extends Shell {
 	
 	/**
 	 * Lists database backups
-	 * @uses DatabaseBackup\Utility\BackupManager::index()
+	 * @uses DatabaseBackup\Utility\Backup::index()
 	 */
 	public function index() {
 		try {
 			//Gets alla files
-			$files = BackupManager::index();
+			$files = Backup::index();
 			
 			$this->out(__d('database_backup', 'Backup files found: {0}', count($files)));
 					
@@ -88,7 +87,7 @@ class BackupShell extends Shell {
 
 				$this->helper('table')->output(array_merge([[
 					__d('database_backup', 'Filename'),
-					__d('database_backup', 'Compression type'),
+					__d('database_backup', 'Compression'),
 					__d('database_backup', 'Datetime')
 				]], $files));
 			}
@@ -97,17 +96,53 @@ class BackupShell extends Shell {
 			$this->abort($e->getMessage());
 		}
 	}
+    
+    /**
+	 * Imports a database backup
+     * @param string $filename
+	 * @uses DatabaseBackup\Utility\BackupImport::filename()
+	 * @uses DatabaseBackup\Utility\BackupImport::import()
+     */
+    public function import($filename) {
+        //The filename can be relative to the APP root
+        if(!\Cake\Filesystem\Folder::isAbsolute($filename))
+            $filename = ROOT.DS.$filename;
+        
+		try {
+			$backup = new \DatabaseBackup\Utility\BackupImport();
+            $backup->filename($filename);
+            
+			//Imports the backup file
+			$file = $backup->import();
+            
+			$this->success(__d('database_backup', 'The backup {0} has been imported', $file));
+        }
+		catch(InternalErrorException $e) {
+			$this->abort($e->getMessage());
+		}
+    }
+    
+    /**
+     * Main command. Alias for `index()`
+     * @uses index()
+     */
+    public function main() {
+        return $this->index();
+    }
 	
 	/**
 	 * Rotates backups.
 	 * 
 	 * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
 	 * @param int $keep Number of files that you want to keep
-	 * @uses DatabaseBackup\Utility\BackupManager::rotate()
+	 * @uses DatabaseBackup\Utility\Backup::rotate()
 	 */
 	public function rotate($keep) {
 		try {
-			if($deleted = BackupManager::rotate($keep)) {
+            //Gets deleted files
+            $deleted = Backup::rotate($keep);
+            
+			if($deleted) {
 				foreach($deleted as $file)
 					$this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
 				
@@ -157,6 +192,15 @@ class BackupShell extends Shell {
 			'index' => [
 				'help' => __d('database_backup', 'Lists database backups')
 			],
+            'import' => [
+				'help' => __d('database_backup', 'Imports a database backup'),
+                'parser' => ['arguments' => [
+					'filename' => [
+						'help' => __d('database_backup', 'Filename to import'),
+						'required' => TRUE
+					]
+				]]	
+            ],
 			'rotate' => [
 				'help' => __d('database_backup', 'Rotates backups. You must indicate the number of backups you want to keep. '
 						. 'So, it will delete all backups that are older'),
@@ -166,7 +210,7 @@ class BackupShell extends Shell {
 						'required' => TRUE
 					]
 				]]				
-			]
+			],
 		]);
 	}
 }

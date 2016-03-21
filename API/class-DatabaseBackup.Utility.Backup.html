@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class DatabaseBackup\Utility\BackupManager | DatabaseBackup API</title>
+	<title>Class DatabaseBackup\Utility\Backup | DatabaseBackup API</title>
 
 	<link rel="stylesheet" href="resources/style.css?e99947befd7bf673c6b43ff75e9e0f170c88a60e">
 
@@ -44,8 +44,9 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li class="active"><a href="class-DatabaseBackup.Utility.Backup.html">Backup</a></li>
 				<li><a href="class-DatabaseBackup.Utility.BackupExport.html">BackupExport</a></li>
-				<li class="active"><a href="class-DatabaseBackup.Utility.BackupManager.html">BackupManager</a></li>
+				<li><a href="class-DatabaseBackup.Utility.BackupImport.html">BackupImport</a></li>
 			</ul>
 
 
@@ -89,7 +90,7 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class BackupManager</h1>
+	<h1>Class Backup</h1>
 
 
 	<div class="description">
@@ -112,7 +113,7 @@
 		<b>Namespace:</b> <a href="namespace-DatabaseBackup.html">DatabaseBackup</a>\<a href="namespace-DatabaseBackup.Utility.html">Utility</a><br>
 		
 
-			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.BackupManager.html#29-142" title="Go to source code">Utility/BackupManager.php</a>
+			<b>Located at</b> <a href="source-class-DatabaseBackup.Utility.Backup.html#29-129" title="Go to source code">Utility/Backup.php</a>
 		<br>
 	</div>
 
@@ -132,7 +133,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#35-52" title="Go to source code">delete</a>( <span>string <var>$filename</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.Backup.html#35-51" title="Go to source code">delete</a>( <span>string <var>$filename</var></span> )</code>
 
 		<div class="description short">
 			<p>Deletes a backup file</p>
@@ -150,7 +151,7 @@
 
 				<h4>Returns</h4>
 				<div class="list">
-					string<br>File path
+					string
 				</div>
 
 				<h4>Throws</h4>
@@ -158,13 +159,9 @@
 					Cake\Network\Exception\InternalErrorException
 				</div>
 
-				<h4>Uses</h4>
-				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_path">DatabaseBackup\Utility\BackupManager::path()</a></code><br>
-				</div>
 				<h4>Used by</h4>
 				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.Backup.html#_rotate">DatabaseBackup\Utility\Backup::rotate()</a></code><br>
 				</div>
 
 
@@ -183,7 +180,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_index">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#54-94" title="Go to source code">index</a>( )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.Backup.html#53-92" title="Go to source code">index</a>( )</code>
 
 		<div class="description short">
 			<p>Gets a list of database backups</p>
@@ -204,61 +201,10 @@
 					Cake\Network\Exception\InternalErrorException
 				</div>
 
-				<h4>Uses</h4>
-				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_path">DatabaseBackup\Utility\BackupManager::path()</a></code><br>
-				</div>
 				<h4>Used by</h4>
 				<div class="list">
 						<code><a href="class-DatabaseBackup.Shell.BackupShell.html#_index">DatabaseBackup\Shell\BackupShell::index()</a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_rotate">DatabaseBackup\Utility\BackupManager::rotate()</a></code><br>
-				</div>
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="path" id="_path">
-
-		<td class="attributes"><code>
-			 public static
-
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_path">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#96-105" title="Go to source code">path</a>( <span>string <var>$filename</var> = <span class="php-keyword1">NULL</span></span> )</code>
-
-		<div class="description short">
-			<p>Returns the path for a backup file.</p>
-		</div>
-
-		<div class="description detailed hidden">
-			<p>Returns the path for a backup file.</p>
-
-<p>If the filename is <code>NULL</code>, returns the backup directory path.</p>
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$filename</var></dt>
-					<dd>Backup filename</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					string<br>File path
-				</div>
-
-
-				<h4>Used by</h4>
-				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.BackupExport.html#$filename">DatabaseBackup\Utility\BackupExport::<var>$filename</var></a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_delete">DatabaseBackup\Utility\BackupManager::delete()</a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_index">DatabaseBackup\Utility\BackupManager::index()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.Backup.html#_rotate">DatabaseBackup\Utility\Backup::rotate()</a></code><br>
 				</div>
 
 
@@ -277,7 +223,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_rotate">#</a>
-		<code><a href="source-class-DatabaseBackup.Utility.BackupManager.html#107-141" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span> )</code>
+		<code><a href="source-class-DatabaseBackup.Utility.Backup.html#94-128" title="Go to source code">rotate</a>( <span>integer <var>$keep</var></span> )</code>
 
 		<div class="description short">
 			<p>Rotates backups.</p>
@@ -307,8 +253,8 @@
 
 				<h4>Uses</h4>
 				<div class="list">
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_delete">DatabaseBackup\Utility\BackupManager::delete()</a></code><br>
-						<code><a href="class-DatabaseBackup.Utility.BackupManager.html#_index">DatabaseBackup\Utility\BackupManager::index()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.Backup.html#_delete">DatabaseBackup\Utility\Backup::delete()</a></code><br>
+						<code><a href="class-DatabaseBackup.Utility.Backup.html#_index">DatabaseBackup\Utility\Backup::index()</a></code><br>
 				</div>
 				<h4>Used by</h4>
 				<div class="list">

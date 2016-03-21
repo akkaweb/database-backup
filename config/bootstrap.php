@@ -25,7 +25,7 @@ use Cake\Network\Exception\InternalErrorException;
 
 //Sets the default directory
 if(!defined('BACKUPS'))
-	define('BACKUPS', ROOT.DS.'backup');
+	define('BACKUPS', ROOT.DS.'backups');
 
 if(!function_exists('get_compression')) {
 	/**
@@ -38,16 +38,12 @@ if(!function_exists('get_compression')) {
 		switch($extension) {
 			case 'sql.gz':
 				return 'gzip';
-				break;
 			case 'sql.bz2':
 				return 'bzip2';
-				break;
 			case 'sql':
 				return 'none';
-				break;
 			default:
 				throw new InternalErrorException(__d('database_backup', 'The {0} extension is not supported', $extension));
-				break;
 		}
 	}
 }
