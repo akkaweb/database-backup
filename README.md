@@ -22,8 +22,8 @@ You can change this directory by defining the `BACKUPS` constant until the plugi
 
 ## Usage
 *DatabaseBackup* provides two utilities:
-* `BackupExport` allows you to export database backups;
-* `BackupManager` allows you to manage database backups.
+* `Backup` allows you to make various operations with database backups;
+* `BackupExport` allows you to export database backups.
 
 Also it provides the `BackupShell`, which allows you to perform various operations from shell.
 
