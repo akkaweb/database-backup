@@ -190,9 +190,6 @@ class BackupExport {
 		
 		$filename = BACKUPS.DS.$filename;
 		
-		if(!is_writable(dirname($filename)))
-			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', dirname($filename)));
-		
 		if(file_exists($filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} already exists', $filename));
 

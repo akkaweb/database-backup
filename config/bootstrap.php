@@ -26,10 +26,13 @@ use Cake\Network\Exception\InternalErrorException;
 //Sets the default directory
 if(!defined('BACKUPS'))
 	define('BACKUPS', ROOT.DS.'backups');
+		
+if(!is_writable(BACKUPS))
+    throw new InternalErrorException(sprintf('File or directory %s not writeable', BACKUPS));
 
 if(!function_exists('get_compression')) {
 	/**
-	 * Get the compression type from the file extension
+	 * Gets the compression type from the file extension
 	 * @param string $extension Extension
 	 * @return string Compression type
 	 * @throws InternalErrorException
