@@ -30,19 +30,36 @@ if(!defined('BACKUPS'))
 if(!is_writable(BACKUPS))
     throw new InternalErrorException(sprintf('File or directory %s not writeable', BACKUPS));
 
+$GLOBALS['supported_extensions'] = ['sql.gz' => 'gzip', 'sql.bz2' => 'bzip2', 'sql' => 'none'];
+
 if(!function_exists('get_compression')) {
 	/**
 	 * Gets the compression type from the file extension
-	 * @param string $extension Extension
+	 * @param string $extension File extension
 	 * @return string Compression type
 	 * @throws InternalErrorException
 	 */
 	function get_compression($extension) {
-        $extensions = ['sql.gz' => 'gzip', 'sql.bz2' => 'bzip2', 'sql' => 'none'];
-        
-        if(!array_key_exists($extension, $extensions))
+        if(!array_key_exists($extension, $GLOBALS['supported_extensions']))
 			throw new InternalErrorException(__d('database_backup', 'The {0} extension is not supported', $extension));
         
-        return $extensions[$extension];
+        return $GLOBALS['supported_extensions'][$extension];
 	}
+}
+
+if(!function_exists('get_extension')) {
+    /**
+	 * Gets the file extension from the compression type
+     * @param string $compression Compression type
+     * @return string File extension
+     * @throws InternalErrorException
+     */
+    function get_extension($compression) {
+        $value = array_search($compression, $GLOBALS['supported_extensions']);
+        
+        if(!$value)
+			throw new InternalErrorException(__d('database_backup', 'The {0} compression is not supported', $compression));
+        
+        return $value;
+    }
 }
