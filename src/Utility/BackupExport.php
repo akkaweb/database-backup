@@ -101,9 +101,9 @@ class BackupExport {
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         
         $executables = [
-            'bzip2' => 'mysqldump --defaults-file=%s %s | bzip2 > %s',
-            'gzip' => 'mysqldump --defaults-file=%s %s | gzip > %s',
-            'none' => 'mysqldump --defaults-file=%s %s > %s',
+            'bzip2' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, BZIP2_BIN),
+            'gzip' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, GZIP_BIN),
+            'none' => sprintf('%s --defaults-file=%%s %%s > %%s', MYSQLDUMP_BIN),
         ];
         
         return $this->executable = $executables[$this->compression];
