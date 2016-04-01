@@ -27,6 +27,12 @@ $GLOBALS['supported_extensions'] = ['sql.gz' => 'gzip', 'sql.bz2' => 'bzip2', 's
 
 require_once 'global_functions.php';
 require_once 'constants.php';
+
+if(!MYSQL_BIN)
+    throw new InternalErrorException(sprintf('The executable file for %s was not found', 'mysql'));
+
+if(!MYSQLDUMP_BIN)
+    throw new InternalErrorException(sprintf('The executable file for %s was not found', 'mysqldump'));
 		
 if(!is_writable(BACKUPS))
     throw new InternalErrorException(sprintf('File or directory %s not writeable', BACKUPS));
