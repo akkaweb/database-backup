@@ -35,15 +35,11 @@ if(!function_exists('get_compression')) {
 	 * @throws InternalErrorException
 	 */
 	function get_compression($extension) {
-		switch($extension) {
-			case 'sql.gz':
-				return 'gzip';
-			case 'sql.bz2':
-				return 'bzip2';
-			case 'sql':
-				return 'none';
-			default:
-				throw new InternalErrorException(__d('database_backup', 'The {0} extension is not supported', $extension));
-		}
+        $extensions = ['sql.gz' => 'gzip', 'sql.bz2' => 'bzip2', 'sql' => 'none'];
+        
+        if(!array_key_exists($extension, $extensions))
+			throw new InternalErrorException(__d('database_backup', 'The {0} extension is not supported', $extension));
+        
+        return $extensions[$extension];
 	}
 }
