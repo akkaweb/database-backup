@@ -121,28 +121,19 @@ class BackupExport {
         if(empty($this->compression))
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         
-        $extensions = [
-            'bzip2' => 'sql.bz2',
-            'gzip' => 'sql.gz',
-            'none' => 'sql',
-        ];
-        
-        return $this->extension = $extensions[$this->compression];
+        return $this->extension = get_extension($this->compression);
     }
 
 	/**
 	 * Sets the compression type.
-	 * 
-	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
 	 * @return string
 	 * @uses $compression
-	 * @throws InternalErrorException
 	 */
 	public function compression($compression) {
-        if(!in_array($compression, ['none', 'gzip', 'bzip2']))
-			throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
-		
+        //Gets the file extension. If the file extension exists, so the compression type is valid
+        get_extension($compression);
+        
 		return $this->compression = $compression;
 	}
 	

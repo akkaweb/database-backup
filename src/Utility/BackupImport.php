@@ -86,8 +86,8 @@ class BackupImport {
 	 * @throws InternalErrorException
 	 */
 	protected function compression($compression) {
-        if(!in_array($compression, ['none', 'gzip', 'bzip2']))
-			throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
+        //Gets the file extension. If the file extension exists, so the compression type is valid
+        get_extension($compression);
 		
 		return $this->compression = $compression;
 	}
