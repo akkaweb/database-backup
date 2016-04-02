@@ -38,15 +38,15 @@ The class constructor accepts the connection name that you want to use.
 
 The utility provides these public methods:
 * `compression()` sets the compression type. The supported values are `gzip`, 
-`bzip2` and `none`. By default, no compression will be used;
+	`bzip2` and `none`. By default, no compression will be used;
 * `connection()` sets the database connection. The connection must be defined 
-in `APP/config/app.php`. By default, the `default` connection will be used;
+	in `APP/config/app.php`. By default, the `default` connection will be used;
 * `filename()` sets the filename where to export the database. Using this 
-method, the compression type will be automatically detected by the filename. 
-This method accepts some patterns (`{$DATABASE}`, `{$DATETIME}`, `{$HOSTNAME}`, 
-`{$TIMESTAMP}`);
+	method, the compression type will be automatically detected by the filename. 
+	This method accepts some patterns (`{$DATABASE}`, `{$DATETIME}`, 
+	`{$HOSTNAME}`, `{$TIMESTAMP}`);
 * `rotate()` sets the number of backups you want to keep. So, it will delete 
-all backups that are older.
+	all backups that are older.
 
 Finally, the `export()` method exports the database.
 
@@ -59,7 +59,7 @@ The class constructor accepts the connection name that you want to use.
 
 The utility provides these public methods:
 * `connection()` sets the database connection. The connection must be defined 
-in `APP/config/app.php`. By default, the `default` connection will be used;
+	in `APP/config/app.php`. By default, the `default` connection will be used;
 * `filename()` sets the filename to use to import the database.
 
 Finally, the `import()` method imports the database.
