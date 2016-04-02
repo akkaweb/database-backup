@@ -101,9 +101,9 @@ class BackupExport {
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         
         $executables = [
-            'bzip2' => 'mysqldump --defaults-file=%s %s | bzip2 > %s',
-            'gzip' => 'mysqldump --defaults-file=%s %s | gzip > %s',
-            'none' => 'mysqldump --defaults-file=%s %s > %s',
+            'bzip2' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, BZIP2_BIN),
+            'gzip' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, GZIP_BIN),
+            'none' => sprintf('%s --defaults-file=%%s %%s > %%s', MYSQLDUMP_BIN),
         ];
         
         return $this->executable = $executables[$this->compression];
@@ -121,28 +121,19 @@ class BackupExport {
         if(empty($this->compression))
 			throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         
-        $extensions = [
-            'bzip2' => 'sql.bz2',
-            'gzip' => 'sql.gz',
-            'none' => 'sql',
-        ];
-        
-        return $this->extension = $extensions[$this->compression];
+        return $this->extension = get_extension($this->compression);
     }
 
 	/**
 	 * Sets the compression type.
-	 * 
-	 * Supported values: `gzip`, `bzip2` and `none` (no compression)
 	 * @param string $compression Compression type
 	 * @return string
 	 * @uses $compression
-	 * @throws InternalErrorException
 	 */
 	public function compression($compression) {
-        if(!in_array($compression, ['none', 'gzip', 'bzip2']))
-			throw new InternalErrorException(__d('database_backup', 'Compression type not supported'));
-		
+        //Gets the file extension. If the file extension exists, so the compression type is valid
+        get_extension($compression);
+        
 		return $this->compression = $compression;
 	}
 	
@@ -189,9 +180,6 @@ class BackupExport {
 		], $filename);
 		
 		$filename = BACKUPS.DS.$filename;
-		
-		if(!is_writable(dirname($filename)))
-			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', dirname($filename)));
 		
 		if(file_exists($filename))
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} already exists', $filename));

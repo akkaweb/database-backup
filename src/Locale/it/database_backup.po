@@ -3,8 +3,8 @@
 #
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-03-21 19:45+0000\n"
-"PO-Revision-Date: 2016-03-21 21:00+0100\n"
+"POT-Creation-Date: 2016-04-02 18:16+0200\n"
+"PO-Revision-Date: 2016-04-02 18:17+0100\n"
 "Last-Translator: Mirko Pagliai <mirko.pagliai.it>\n"
 "Language-Team: Italian <>\n"
 "MIME-Version: 1.0\n"
@@ -104,7 +104,6 @@ msgid "Number of backups you want to keep"
 msgstr "Numero di backup che vuoi mantenere"
 
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/Backup.php:45
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:194
 msgid "File or directory {0} not writeable"
 msgstr "File o directory {0} non scrivibile"
 
@@ -126,26 +125,21 @@ msgstr "Valore non valido per la rotazione"
 msgid "Compression type is missing"
 msgstr "Tipo di compressione non presente"
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:144
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:90
-msgid "Compression type not supported"
-msgstr "Tipo di compressione non supportato"
-
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:161
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:152
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:107
 msgid "Invalid connection"
 msgstr "Connessione non valida"
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:197
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:185
 msgid "File or directory {0} already exists"
 msgstr "File o directory {0} già esistente"
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:201
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:189
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:129
 msgid "Invalid file extension"
 msgstr "Estensione del file non valida"
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:252
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:240
 msgid "File or directory {0} has not been created"
 msgstr "Il file o la directory {0} non è stato creato"
 

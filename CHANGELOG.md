@@ -1,5 +1,9 @@
 # 1.x branch
 ## 1.1 branch
+### 1.1.1
+* improved code;
+* executables are set up and checked in the bootstrap.
+
 ### 1.1.0
 * added the `BackupImport` class;
 * added the `import` shell command;

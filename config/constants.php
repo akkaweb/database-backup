@@ -21,18 +21,22 @@
  * @link		http://git.novatlantis.it Nova Atlantis Ltd
  */
 
-use Cake\Network\Exception\InternalErrorException;
+//Sets the default directory
+if(!defined('BACKUPS'))
+	define('BACKUPS', ROOT.DS.'backups');
 
-$GLOBALS['supported_extensions'] = ['sql.gz' => 'gzip', 'sql.bz2' => 'bzip2', 'sql' => 'none'];
+//Sets the bzip2 executable
+if(!defined('BZIP2_BIN'))
+	define('BZIP2_BIN', which('bzip2'));
 
-require_once 'global_functions.php';
-require_once 'constants.php';
+//Sets the gzip executable
+if(!defined('GZIP_BIN'))
+	define('GZIP_BIN', which('gzip'));
 
-if(!MYSQL_BIN)
-    throw new InternalErrorException(sprintf('The executable file for %s was not found', 'mysql'));
+//Sets the mysql executable
+if(!defined('MYSQL_BIN'))
+	define('MYSQL_BIN', which('mysql'));
 
-if(!MYSQLDUMP_BIN)
-    throw new InternalErrorException(sprintf('The executable file for %s was not found', 'mysqldump'));
-		
-if(!is_writable(BACKUPS))
-    throw new InternalErrorException(sprintf('File or directory %s not writeable', BACKUPS));
+//Sets the mysqldump executable
+if(!defined('MYSQLDUMP_BIN'))
+	define('MYSQLDUMP_BIN', which('mysqldump'));
