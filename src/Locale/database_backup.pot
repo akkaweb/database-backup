@@ -4,7 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-03-21 19:45+0000\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-04-02 18:16+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -90,7 +91,6 @@ msgid "Number of backups you want to keep"
 msgstr ""
 
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/Backup.php:45
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:194
 msgid "File or directory {0} not writeable"
 msgstr ""
 
@@ -112,26 +112,21 @@ msgstr ""
 msgid "Compression type is missing"
 msgstr ""
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:144
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:90
-msgid "Compression type not supported"
-msgstr ""
-
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:161
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:152
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:107
 msgid "Invalid connection"
 msgstr ""
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:197
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:185
 msgid "File or directory {0} already exists"
 msgstr ""
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:201
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:189
 #: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupImport.php:129
 msgid "Invalid file extension"
 msgstr ""
 
-#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:252
+#: /home/mirko/Libs/Plugins/DatabaseBackup/src/Utility/BackupExport.php:240
 msgid "File or directory {0} has not been created"
 msgstr ""
 
