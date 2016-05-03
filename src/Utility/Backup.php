@@ -41,12 +41,14 @@ class Backup {
 	public static function delete($filename) {
 		$filename = BACKUPS.DS.$filename;
 		
-		if(!is_writable($filename))
+		if(!is_writable($filename)) {
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', $filename));
-		
-		if(!(new File($filename))->delete())
+        }
+        
+		if(!(new File($filename))->delete()) {
 			throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $filename));
-		
+        }
+        
 		return $filename;
 	}
 	
@@ -56,8 +58,9 @@ class Backup {
 	 * @throws InternalErrorException
 	 */
 	public static function index() {
-		if(!is_readable(BACKUPS))
+		if(!is_readable(BACKUPS)) {
 			throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', rtr(BACKUPS)));
+        }
 		
 		//Gets all files
 		$files = array_values((new Folder(BACKUPS))->read()[1]);
@@ -66,29 +69,36 @@ class Backup {
 		$files = array_filter(array_map(function($file) {
 			preg_match('/(\d{14})?\.(sql|sql\.gz|sql\.bz2)$/i', $file, $matches);
 			
-			if(empty($matches[2]))
+			if(empty($matches[2])) {
 				return FALSE;
+            }
 			
 			//If it cannot detect the date from the filename, it tries to find the last modified date of the file
-			if(!empty($matches[1]))
+			if(!empty($matches[1])) {
 				$datetime = preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1]);
-			else
+            }
+			else {
 				$datetime = date('Y-m-d H:i:s', (new File(BACKUPS.DS.$file))->lastChange());
-			
+            }
+            
 			return (object) [
 				'filename' => $file,
 				'extension' => $matches[2],
 				'compression' => get_compression($matches[2]),
-				'datetime' => new \Cake\I18n\FrozenTime($datetime)
+				'datetime' => new \Cake\I18n\FrozenTime($datetime),
 			];
 		}, $files));
+        
+        if(empty($files)) {
+            return [];
+        }
 		
 		//Re-orders, using the datetime value
 		usort($files, function($a, $b) {
-			return preg_replace('/\D/', NULL, $b->datetime) - preg_replace('/\D/', NULL, $a->datetime);
+            return $b->datetime >= $a->datetime;
 		});
 		
-		return empty($files) ? [] : $files;
+		return $files;
 	}
 	
 	/**
@@ -102,15 +112,17 @@ class Backup {
 	 * @uses index()
 	 */
 	public static function rotate($keep) {
-		if($keep <= 0 || !ctype_digit($keep))
+		if($keep <= 0 || !ctype_digit($keep)) {
 			throw new InternalErrorException(__d('database_backup', 'Invalid value for the rotation', $keep));
+        }
 				
 		//Gets all files
 		$files = self::index();
 		
 		//Returns, if the number of files to keep is larger than the number of files that are present
-		if($keep >= count($files))
+		if($keep >= count($files)) {
 			return FALSE;
+        }
 		
 		//The number of files to be deleted is equal to the number of files that are present less the number of files that you want to keep
 		$diff = count($files) - $keep;
@@ -121,8 +133,9 @@ class Backup {
 		}, array_slice($files, -$diff, $diff));
 		
 		//Deletes
-		foreach($files as $file)
+		foreach($files as $file) {
 			self::delete($file);
+        }
 		
 		return $files;
 	}
