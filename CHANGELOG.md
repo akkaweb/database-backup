@@ -1,5 +1,8 @@
 # 1.x branch
 ## 1.1 branch
+### 1.1.2
+* fixed bug ordering backup files.
+
 ### 1.1.1
 * improved code;
 * executables are set up and checked in the bootstrap.
