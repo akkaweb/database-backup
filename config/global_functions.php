@@ -57,6 +57,17 @@ if (!function_exists('getExtension')) {
     }
 }
 
+if(!function_exists('rtr')) {
+	/**
+	 * Returns the relative path (to the APP root) of an absolute path
+	 * @param string $path Absolute path
+	 * @return string Relativa path
+	 */
+	function rtr($path) {
+		return preg_replace(sprintf('/^%s/', preg_quote(ROOT.DS, DS)), NULL, $path);
+	}
+}
+
 if (!function_exists('which')) {
     /**
      * Executes the `which` command.

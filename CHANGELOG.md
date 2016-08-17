@@ -1,6 +1,7 @@
 # 1.x branch
 ## 1.1 branch
 ### 1.1.3
+* fixed bug: the `rtr()` global function was missing;
 * fixed code for CakePHP Code Sniffer.
 
 ### 1.1.2
