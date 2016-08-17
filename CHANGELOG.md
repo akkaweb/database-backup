@@ -1,5 +1,8 @@
 # 1.x branch
 ## 1.1 branch
+### 1.1.3
+* fixed code for CakePHP Code Sniffer.
+
 ### 1.1.2
 * fixed bug ordering backup files.
 

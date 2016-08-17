@@ -15,28 +15,33 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with DatabaseBackup.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author		Mirko Pagliai <mirko.pagliai@gmail.com>
- * @copyright	Copyright (c) 2016, Mirko Pagliai for Nova Atlantis Ltd
- * @license		http://www.gnu.org/licenses/agpl.txt AGPL License
- * @link		http://git.novatlantis.it Nova Atlantis Ltd
+ * @author      Mirko Pagliai <mirko.pagliai@gmail.com>
+ * @copyright   Copyright (c) 2016, Mirko Pagliai for Nova Atlantis Ltd
+ * @license     http://www.gnu.org/licenses/agpl.txt AGPL License
+ * @link        http://git.novatlantis.it Nova Atlantis Ltd
  */
 
 //Sets the default directory
-if(!defined('BACKUPS'))
-	define('BACKUPS', ROOT.DS.'backups');
+if (!defined('BACKUPS')) {
+    define('BACKUPS', ROOT . DS . 'backups');
+}
 
 //Sets the bzip2 executable
-if(!defined('BZIP2_BIN'))
-	define('BZIP2_BIN', which('bzip2'));
+if (!defined('BZIP2_BIN')) {
+    define('BZIP2_BIN', which('bzip2'));
+}
 
 //Sets the gzip executable
-if(!defined('GZIP_BIN'))
-	define('GZIP_BIN', which('gzip'));
+if (!defined('GZIP_BIN')) {
+    define('GZIP_BIN', which('gzip'));
+}
 
 //Sets the mysql executable
-if(!defined('MYSQL_BIN'))
-	define('MYSQL_BIN', which('mysql'));
+if (!defined('MYSQL_BIN')) {
+    define('MYSQL_BIN', which('mysql'));
+}
 
 //Sets the mysqldump executable
-if(!defined('MYSQLDUMP_BIN'))
-	define('MYSQLDUMP_BIN', which('mysqldump'));
+if (!defined('MYSQLDUMP_BIN')) {
+    define('MYSQLDUMP_BIN', which('mysqldump'));
+}
