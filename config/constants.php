@@ -23,7 +23,7 @@
 
 //Sets the default directory
 if (!defined('BACKUPS')) {
-    define('BACKUPS', ROOT . 'backups');
+    define('BACKUPS', ROOT . DS . 'backups');
 }
 
 //Sets the bzip2 executable
