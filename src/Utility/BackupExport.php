@@ -108,7 +108,7 @@ class BackupExport
         if (empty($this->compression)) {
             throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         }
-        
+
         $executables = [
             'bzip2' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, BZIP2_BIN),
             'gzip' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, GZIP_BIN),
@@ -131,7 +131,7 @@ class BackupExport
         if (empty($this->compression)) {
             throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
         }
-        
+
         return $this->extension = getExtension($this->compression);
     }
 
@@ -166,7 +166,7 @@ class BackupExport
         if (empty($this->connection)) {
             throw new InternalErrorException(__d('database_backup', 'Invalid connection'));
         }
-        
+
         return $this->connection;
     }
 
@@ -202,12 +202,12 @@ class BackupExport
         if (file_exists($filename)) {
             throw new InternalErrorException(__d('database_backup', 'File or directory {0} already exists', $filename));
         }
-        
+
         //Checks if the file has an extension
         if (!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches)) {
             throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
         }
-        
+
         $this->compression(getCompression($matches[1]));
 
         return $this->filename = $filename;
@@ -236,7 +236,7 @@ class BackupExport
         if (empty($this->compression)) {
             $this->compression('none');
         }
-        
+
         //Sets the executable and the extension
         $this->_executable();
         $this->_extension();
@@ -247,7 +247,7 @@ class BackupExport
         if (empty($this->filename)) {
             $this->filename(sprintf('backup_{$DATABASE}_{$DATETIME}.%s', $this->extension));
         }
-        
+
         //For security reasons, it's recommended to specify the password in
         //a configuration file and not in the command (a user can execute
         //a `ps aux | grep mysqldump` and see the password).
@@ -264,14 +264,14 @@ class BackupExport
         if (!is_readable($this->filename)) {
             throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', $this->filename));
         }
-        
+
         chmod($this->filename, 0766);
 
         //Rotates backups
         if (!empty($this->rotate)) {
             Backup::rotate($this->rotate);
         }
-        
+
         return $this->filename;
     }
 
