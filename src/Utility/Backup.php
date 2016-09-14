@@ -29,7 +29,8 @@ use Cake\Network\Exception\InternalErrorException;
 /**
  * Utility to manage database backups.
  *
- * Please, refer to the `README` file to know how to use the utility and to see examples.
+ * Please, refer to the `README.md` file to know how to use the utility and to
+ * see examples.
  */
 class Backup
 {
@@ -44,11 +45,19 @@ class Backup
         $filename = BACKUPS . DS . $filename;
 
         if (!is_writable($filename)) {
-            throw new InternalErrorException(__d('database_backup', 'File or directory {0} not writeable', $filename));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'File or directory {0} not writeable',
+                $filename
+            ));
         }
 
         if (!(new File($filename))->delete()) {
-            throw new InternalErrorException(__d('database_backup', 'Impossible to delete the file {0}', $filename));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'Impossible to delete the file {0}',
+                $filename
+            ));
         }
 
         return $filename;
@@ -62,7 +71,11 @@ class Backup
     public static function index()
     {
         if (!is_readable(BACKUPS)) {
-            throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', rtr(BACKUPS)));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'File or directory {0} not readable',
+                rtr(BACKUPS)
+            ));
         }
 
         //Gets all files
@@ -70,17 +83,29 @@ class Backup
 
         //Parses files
         $files = array_filter(array_map(function ($file) {
-            preg_match('/(\d{14})?\.(sql|sql\.gz|sql\.bz2)$/i', $file, $matches);
+            preg_match(
+                '/(\d{14})?\.(sql|sql\.gz|sql\.bz2)$/i',
+                $file,
+                $matches
+            );
 
             if (empty($matches[2])) {
                 return false;
             }
 
-            //If it cannot detect the date from the filename, it tries to find the last modified date of the file
+            //If it cannot detect the date from the filename, it tries to find
+            //  the last modified date of the file
             if (!empty($matches[1])) {
-                $datetime = preg_replace('/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1-$2-$3 $4:$5:$6', $matches[1]);
+                $datetime = preg_replace(
+                    '/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/',
+                    '$1-$2-$3 $4:$5:$6',
+                    $matches[1]
+                );
             } else {
-                $datetime = date('Y-m-d H:i:s', (new File(BACKUPS . DS . $file))->lastChange());
+                $datetime = date(
+                    'Y-m-d H:i:s',
+                    (new File(BACKUPS . DS . $file))->lastChange()
+                );
             }
 
             return (object)[
@@ -106,7 +131,8 @@ class Backup
     /**
      * Rotates backups.
      *
-     * You must indicate the number of backups you want to keep. So, it will delete all backups that are older
+     * You must indicate the number of backups you want to keep. So, it will
+     *  delete all backups that are older.
      * @param int $keep Number of files that you want to keep
      * @return array Files that have been deleted
      * @throws InternalErrorException
@@ -116,18 +142,24 @@ class Backup
     public static function rotate($keep)
     {
         if ($keep <= 0 || !ctype_digit($keep)) {
-            throw new InternalErrorException(__d('database_backup', 'Invalid value for the rotation', $keep));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'Invalid value for the rotation',
+                $keep
+            ));
         }
 
         //Gets all files
         $files = self::index();
 
-        //Returns, if the number of files to keep is larger than the number of files that are present
+        //Returns, if the number of files to keep is larger than the number of
+        //  files that are present
         if ($keep >= count($files)) {
             return false;
         }
 
-        //The number of files to be deleted is equal to the number of files that are present less the number of files that you want to keep
+        //The number of files to be deleted is equal to the number of files
+        //  that are present less the number of files that you want to keep
         $diff = count($files) - $keep;
 
         //Files that will be deleted

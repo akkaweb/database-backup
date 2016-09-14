@@ -22,6 +22,7 @@
  */
 namespace DatabaseBackup\Utility;
 
+use Cake\Datasource\ConnectionManager;
 use Cake\Network\Exception\InternalErrorException;
 
 /**
@@ -65,13 +66,26 @@ class BackupImport
     protected function _executable()
     {
         if (empty($this->compression)) {
-            throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+            throw new InternalErrorException(
+                __d('database_backup', 'Compression type is missing')
+            );
         }
 
         $executables = [
-            'bzip2' => sprintf('%s -dc %%s | %s --defaults-extra-file=%%s %%s', BZIP2_BIN, MYSQL_BIN),
-            'gzip' => sprintf('%s -dc %%s | %s --defaults-extra-file=%%s %%s', GZIP_BIN, MYSQL_BIN),
-            'none' => sprintf('cat %%s | %s --defaults-extra-file=%%s %%s', MYSQL_BIN),
+            'bzip2' => sprintf(
+                '%s -dc %%s | %s --defaults-extra-file=%%s %%s',
+                BZIP2_BIN,
+                MYSQL_BIN
+            ),
+            'gzip' => sprintf(
+                '%s -dc %%s | %s --defaults-extra-file=%%s %%s',
+                GZIP_BIN,
+                MYSQL_BIN
+            ),
+            'none' => sprintf(
+                'cat %%s | %s --defaults-extra-file=%%s %%s',
+                MYSQL_BIN
+            ),
         ];
 
         return $this->executable = $executables[$this->compression];
@@ -115,10 +129,12 @@ class BackupImport
      */
     public function connection($connection)
     {
-        $this->connection = \Cake\Datasource\ConnectionManager::config($connection);
+        $this->connection = ConnectionManager::config($connection);
 
         if (empty($this->connection)) {
-            throw new InternalErrorException(__d('database_backup', 'Invalid connection'));
+            throw new InternalErrorException(
+                __d('database_backup', 'Invalid connection')
+            );
         }
 
         return $this->connection;
@@ -139,12 +155,22 @@ class BackupImport
         }
 
         if (!is_readable($filename)) {
-            throw new InternalErrorException(__d('database_backup', 'File or directory {0} not readable', $filename));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'File or directory {0} not readable',
+                $filename
+            ));
         }
 
         //Checks if the file has an extension
-        if (!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches)) {
-            throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
+        if (!preg_match(
+            '/\.(.+)$/',
+            pathinfo($filename, PATHINFO_BASENAME),
+            $matches
+        )) {
+            throw new InternalErrorException(
+                __d('database_backup', 'Invalid file extension')
+            );
         }
 
         $this->compression(getCompression($matches[1]));
@@ -163,7 +189,9 @@ class BackupImport
     public function import()
     {
         if (empty($this->filename)) {
-            throw new InternalErrorException(__d('database_backup', 'The filename is missing'));
+            throw new InternalErrorException(
+                __d('database_backup', 'The filename is missing')
+            );
         }
 
         //Sets the executable
@@ -174,10 +202,20 @@ class BackupImport
         //a `ps aux | grep mysqldump` and see the password).
         //So it creates a temporary file to store the configuration options
         $auth = tempnam(sys_get_temp_dir(), 'auth');
-        file_put_contents($auth, sprintf("[client]\nuser=%s\npassword=\"%s\"\nhost=%s", $this->connection['username'], $this->connection['password'], $this->connection['host']));
+        file_put_contents($auth, sprintf(
+            "[client]\nuser=%s\npassword=\"%s\"\nhost=%s",
+            $this->connection['username'],
+            $this->connection['password'],
+            $this->connection['host']
+        ));
 
         //Executes
-        exec(sprintf($this->executable, $this->filename, $auth, $this->connection['database']));
+        exec(sprintf(
+            $this->executable,
+            $this->filename,
+            $auth,
+            $this->connection['database']
+        ));
 
         //Deletes the temporary file
         unlink($auth);

@@ -31,7 +31,11 @@ if (!function_exists('getCompression')) {
     function getCompression($extension)
     {
         if (!array_key_exists($extension, $GLOBALS['supported_extensions'])) {
-            throw new InternalErrorException(__d('database_backup', 'The {0} extension is not supported', $extension));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'The {0} extension is not supported',
+                $extension
+            ));
         }
 
         return $GLOBALS['supported_extensions'][$extension];
@@ -50,7 +54,11 @@ if (!function_exists('getExtension')) {
         $value = array_search($compression, $GLOBALS['supported_extensions']);
 
         if (!$value) {
-            throw new InternalErrorException(__d('database_backup', 'The {0} compression is not supported', $compression));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'The {0} compression is not supported',
+                $compression
+            ));
         }
 
         return $value;
@@ -65,7 +73,11 @@ if (!function_exists('rtr')) {
      */
     function rtr($path)
     {
-        return preg_replace(sprintf('/^%s/', preg_quote(ROOT . DS, DS)), null, $path);
+        return preg_replace(
+            sprintf('/^%s/', preg_quote(ROOT . DS, DS)),
+            null,
+            $path
+        );
     }
 }
 

@@ -30,7 +30,8 @@ use DatabaseBackup\Utility\Backup;
 /**
  * Shell to handle database backups.
  *
- * Please, refer to the `README` file to know how to use the utility and to see examples.
+ * Please, refer to the `README.md` file to know how to use the utility and to
+ *  see examples.
  */
 class BackupShell extends Shell
 {
@@ -63,7 +64,11 @@ class BackupShell extends Shell
             //Exports the backup file
             $file = $backup->export();
 
-            $this->success(__d('database_backup', 'The backup {0} has been exported', $file));
+            $this->success(__d(
+                'database_backup',
+                'The backup {0} has been exported',
+                $file
+            ));
 
             //Rotates backup files.
             if ($this->param('rotate')) {
@@ -85,12 +90,20 @@ class BackupShell extends Shell
             //Gets alla files
             $files = Backup::index();
 
-            $this->out(__d('database_backup', 'Backup files found: {0}', count($files)));
+            $this->out(__d(
+                'database_backup',
+                'Backup files found: {0}',
+                count($files)
+            ));
 
             if (!empty($files)) {
                 //Re-indexes and filters
                 $files = array_map(function ($file) {
-                    return [$file->filename, $file->compression, $file->datetime];
+                    return [
+                        $file->filename,
+                        $file->compression,
+                        $file->datetime,
+                    ];
                 }, $files);
 
                 $this->helper('table')->output(array_merge([[
@@ -125,7 +138,11 @@ class BackupShell extends Shell
             //Imports the backup file
             $file = $backup->import();
 
-            $this->success(__d('database_backup', 'The backup {0} has been imported', $file));
+            $this->success(__d(
+                'database_backup',
+                'The backup {0} has been imported',
+                $file
+            ));
         } catch (InternalErrorException $e) {
             $this->abort($e->getMessage());
         }
@@ -158,12 +175,22 @@ class BackupShell extends Shell
 
             if ($deleted) {
                 foreach ($deleted as $file) {
-                    $this->verbose(__d('database_backup', 'The file {0} has been deleted', $file));
+                    $this->verbose(__d(
+                        'database_backup',
+                        'The file {0} has been deleted',
+                        $file
+                    ));
                 }
 
-                $this->success(__d('database_backup', 'Deleted backup files: {0}', count($deleted)));
+                $this->success(__d(
+                    'database_backup',
+                    'Deleted backup files: {0}',
+                    count($deleted)
+                ));
             } else {
-                $this->verbose(__d('database_backup', 'No file has been deleted'));
+                $this->verbose(
+                    __d('database_backup', 'No file has been deleted')
+                );
             }
         } catch (InternalErrorException $e) {
             $this->abort($e->getMessage());

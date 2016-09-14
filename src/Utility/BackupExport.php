@@ -22,6 +22,7 @@
  */
 namespace DatabaseBackup\Utility;
 
+use Cake\Datasource\ConnectionManager;
 use Cake\Network\Exception\InternalErrorException;
 use DatabaseBackup\Utility\Backup;
 
@@ -106,13 +107,26 @@ class BackupExport
     protected function _executable()
     {
         if (empty($this->compression)) {
-            throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+            throw new InternalErrorException(
+                __d('database_backup', 'Compression type is missing')
+            );
         }
 
         $executables = [
-            'bzip2' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, BZIP2_BIN),
-            'gzip' => sprintf('%s --defaults-file=%%s %%s | %s > %%s', MYSQLDUMP_BIN, GZIP_BIN),
-            'none' => sprintf('%s --defaults-file=%%s %%s > %%s', MYSQLDUMP_BIN),
+            'bzip2' => sprintf(
+                '%s --defaults-file=%%s %%s | %s > %%s',
+                MYSQLDUMP_BIN,
+                BZIP2_BIN
+            ),
+            'gzip' => sprintf(
+                '%s --defaults-file=%%s %%s | %s > %%s',
+                MYSQLDUMP_BIN,
+                GZIP_BIN
+            ),
+            'none' => sprintf(
+                '%s --defaults-file=%%s %%s > %%s',
+                MYSQLDUMP_BIN
+            ),
         ];
 
         return $this->executable = $executables[$this->compression];
@@ -129,7 +143,9 @@ class BackupExport
     protected function _extension()
     {
         if (empty($this->compression)) {
-            throw new InternalErrorException(__d('database_backup', 'Compression type is missing'));
+            throw new InternalErrorException(
+                __d('database_backup', 'Compression type is missing')
+            );
         }
 
         return $this->extension = getExtension($this->compression);
@@ -161,10 +177,12 @@ class BackupExport
      */
     public function connection($connection)
     {
-        $this->connection = \Cake\Datasource\ConnectionManager::config($connection);
+        $this->connection = ConnectionManager::config($connection);
 
         if (empty($this->connection)) {
-            throw new InternalErrorException(__d('database_backup', 'Invalid connection'));
+            throw new InternalErrorException(
+                __d('database_backup', 'Invalid connection')
+            );
         }
 
         return $this->connection;
@@ -200,12 +218,22 @@ class BackupExport
         $filename = BACKUPS . DS . $filename;
 
         if (file_exists($filename)) {
-            throw new InternalErrorException(__d('database_backup', 'File or directory {0} already exists', $filename));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'File or directory {0} already exists',
+                $filename
+            ));
         }
 
         //Checks if the file has an extension
-        if (!preg_match('/\.(.+)$/', pathinfo($filename, PATHINFO_BASENAME), $matches)) {
-            throw new InternalErrorException(__d('database_backup', 'Invalid file extension'));
+        if (!preg_match(
+            '/\.(.+)$/',
+            pathinfo($filename, PATHINFO_BASENAME),
+            $matches
+        )) {
+            throw new InternalErrorException(
+                __d('database_backup', 'Invalid file extension')
+            );
         }
 
         $this->compression(getCompression($matches[1]));
@@ -245,7 +273,9 @@ class BackupExport
         //This is not done in the constructor, because you can set and
         //alternative output directory
         if (empty($this->filename)) {
-            $this->filename(sprintf('backup_{$DATABASE}_{$DATETIME}.%s', $this->extension));
+            $this->filename(
+                sprintf('backup_{$DATABASE}_{$DATETIME}.%s', $this->extension)
+            );
         }
 
         //For security reasons, it's recommended to specify the password in
@@ -253,16 +283,30 @@ class BackupExport
         //a `ps aux | grep mysqldump` and see the password).
         //So it creates a temporary file to store the configuration options
         $auth = tempnam(sys_get_temp_dir(), 'auth');
-        file_put_contents($auth, sprintf("[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s", $this->connection['username'], $this->connection['password'], $this->connection['host']));
+        file_put_contents($auth, sprintf(
+            "[mysqldump]\nuser=%s\npassword=\"%s\"\nhost=%s",
+            $this->connection['username'],
+            $this->connection['password'],
+            $this->connection['host']
+        ));
 
         //Executes
-        exec(sprintf($this->executable, $auth, $this->connection['database'], $this->filename));
+        exec(sprintf(
+            $this->executable,
+            $auth,
+            $this->connection['database'],
+            $this->filename
+        ));
 
         //Deletes the temporary file
         unlink($auth);
 
         if (!is_readable($this->filename)) {
-            throw new InternalErrorException(__d('database_backup', 'File or directory {0} has not been created', $this->filename));
+            throw new InternalErrorException(__d(
+                'database_backup',
+                'File or directory {0} has not been created',
+                $this->filename
+            ));
         }
 
         chmod($this->filename, 0766);
