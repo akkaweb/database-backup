@@ -70,6 +70,9 @@ class Backup
 
         //Parses files
         $files = array_filter(array_map(function ($file) {
+            
+            $filesize = number_format(filesize(BACKUPS . DS . $file) / 1024, 2) . ' kB';
+                
             preg_match('/(\d{14})?\.(sql|sql\.gz|sql\.bz2)$/i', $file, $matches);
 
             if (empty($matches[2])) {
@@ -86,6 +89,7 @@ class Backup
             return (object)[
                 'filename' => $file,
                 'extension' => $matches[2],
+                'filesize' => $filesize,
                 'compression' => getCompression($matches[2]),
                 'datetime' => new \Cake\I18n\FrozenTime($datetime),
             ];
